@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en" data-skin="atlas" data-pal="delft">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Classy European Vacation</title>
+<meta name="theme-color" content="#1B2F6B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Classy European Vacation">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Architects+Daughter&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  --bg:#EEF1F2; --card:#FFFFFF; --ink:#16222C; --muted:#5A6873; --line:#D8DEE2;
+  --prague:#A8362A; --ams:#1E6A8C; --bruges:#A87612; --mark:#FFE57A; --markink:#3d3000;
+  --accent:var(--prague);
+  --head:"IM Fell English",Georgia,serif;
+  --fell:"IM Fell English",Georgia,"Times New Roman",serif;
+  --body:"EB Garamond",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101A21; --card:#192630; --ink:#E9EEF1; --muted:#9AA9B4; --line:#2A3A46;
+    --prague:#E2705F; --ams:#5BB1D4; --bruges:#E0AE4A; --mark:#6b5a10; --markink:#FFF1B3;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101A21; --card:#192630; --ink:#E9EEF1; --muted:#9AA9B4; --line:#2A3A46;
+  --prague:#E2705F; --ams:#5BB1D4; --bruges:#E0AE4A; --mark:#6b5a10; --markink:#FFF1B3;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+body[data-city="prague"]{--accent:var(--prague)}
+body[data-city="amsterdam"]{--accent:var(--ams)}
+body[data-city="bruges"]{--accent:var(--bruges)}
+h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--accent)}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header.top{padding:18px 0 10px}
+header.top h1{font-size:26px;font-weight:700}
+header.top p{margin:4px 0 0;color:var(--muted);font-size:15px}
+.hero{background:var(--accent);color:#fff;border-radius:18px;padding:18px 18px 16px;margin:6px 0 14px}
+.hero h2{font-size:24px;font-weight:700}
+.hero p{margin:6px 0 0;opacity:.92;font-size:15.5px}
+.hero .big{font-family:var(--head);font-size:34px;font-weight:700;line-height:1}
+.strip{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:15px;font-weight:600;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.daychip{flex:0 0 auto;min-width:58px;text-align:center;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:6px 8px;line-height:1.15}
+.daychip b{display:block;font-family:var(--head);font-size:19px}
+.daychip small{font-size:12px;color:var(--muted)}
+.daychip[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#fff}
+.daychip[aria-pressed="true"] small{color:#fff;opacity:.85}
+.daychip.today{outline:2px solid var(--ink);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.item{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.time{font-family:var(--head);font-weight:700;font-size:16px;color:var(--accent);padding-top:1px}
+.time.none{color:var(--muted);font-weight:500;font-size:14px}
+.ttl{font-weight:600;font-size:17.5px}
+.ttl .hl{background:linear-gradient(transparent 38%,var(--mark) 38%,var(--mark) 92%,transparent 92%);color:var(--markink);padding:0 3px;border-radius:2px;color:var(--ink)}
+.note{color:var(--muted);font-size:15px;margin-top:2px}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.tag.book{background:var(--mark);color:var(--markink)}
+.tag.opt{border:1px solid var(--line);color:var(--muted)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.btn{border:1.5px solid var(--line);background:transparent;border-radius:10px;padding:6px 11px;font-size:14.5px;font-weight:600;text-decoration:none;color:var(--ink);display:inline-block}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.sect{font-size:13.5px;font-weight:600;color:var(--muted);margin:16px 2px 8px}
+.alert{border-left:5px solid var(--mark);background:var(--card);border-radius:10px;padding:10px 12px;margin:0 0 10px;font-size:15.5px}
+.alert b{display:block}
+details.card summary{font-family:var(--head);font-weight:700;font-size:18px;cursor:pointer}
+details.card[open] summary{margin-bottom:8px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav.tabs button{flex:1;border:0;background:transparent;padding:6px 2px;border-radius:10px;font-size:12.5px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs button[aria-selected="true"]{color:var(--accent)}
+.mapbox{background:#EFE2C2;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:12px;box-shadow:0 2px 10px rgba(60,40,20,.18)}
+.mapbox svg{display:block;width:100%;height:auto}
+.sea{fill:#DCE9EF}.land{fill:#E9E4D6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sea{fill:#142733}:root:not([data-theme="light"]) .land{fill:#1F2D35}}
+:root[data-theme="dark"] .sea{fill:#142733}:root[data-theme="dark"] .land{fill:#1F2D35}
+.pin{cursor:pointer}
+.eu-c{font-family:var(--fell);font-size:10.5px;letter-spacing:3px;fill:#6B5640}
+.eu-sea{font-family:var(--fell);font-style:italic;font-size:13px;letter-spacing:2px;fill:#3F6670}
+.eu-o{font-family:var(--fell);font-style:italic;font-size:8.5px;fill:#5A4630}
+.eu-g{font-family:var(--fell);font-size:6.5px;fill:#5A4630;opacity:.75}
+.eu-r{font-family:var(--fell);font-style:italic;font-size:9.5px;fill:#3A2A1C;paint-order:stroke;stroke:#EFE2C2;stroke-width:3px}
+.eu-city{font-family:var(--fell);font-size:15px;fill:#2B2118;paint-order:stroke;stroke:#F3E8CC;stroke-width:3.5px}
+.eu-t{font-family:var(--fell);font-size:13px;fill:#2B2118;letter-spacing:1px}
+.eu-ts{font-family:var(--fell);font-style:italic;font-size:8.5px;fill:#5A4630}
+.eu-n{font-family:var(--fell);font-size:9px;fill:#3A2A1C}
+.place{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line)}
+.place:first-child{border-top:0}
+.place .n{font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
+.fact{padding:12px 0;border-top:1px solid var(--line)}
+.fact:first-child{border-top:0}
+.fact button.q{width:100%;text-align:left;background:none;border:0;padding:0;font-weight:600;font-size:17px;display:flex;justify-content:space-between;gap:8px}
+.fact p{margin:8px 0 0;color:var(--ink)}
+.fact .cat{font-size:12.5px;color:var(--muted);font-weight:600}
+.check{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);font-size:17px}
+.check:first-child{border-top:0}
+.check input{width:22px;height:22px;margin-top:2px;accent-color:var(--accent)}
+.check.done span{text-decoration:line-through;color:var(--muted)}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;text-align:left;font-weight:600}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+.citywrap{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);margin-bottom:10px}
+#citymap{display:block;width:100%;aspect-ratio:4/5;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+.m-land{fill:none}
+.m-park{fill:#CBD3A3;stroke:#8C8F5C;stroke-width:.8}
+.m-block{fill:#DCC9A0;stroke:#8B6B3E;stroke-width:.8}
+.m-plaza{fill:#F6EBCB;stroke:#8B6B3E;stroke-width:.8}
+.m-ij{fill:#BCCFC5;stroke:#6F8F94;stroke-width:1.2}
+.m-wedge{fill:none;stroke:#6F8F94;stroke-linecap:round;stroke-linejoin:round}
+.m-water{fill:none;stroke:#BCCFC5;stroke-linecap:round;stroke-linejoin:round}
+.m-case{fill:none;stroke:#8B6B3E;stroke-linecap:round;stroke-linejoin:round}
+.m-st{fill:none;stroke:#F1E4BF;stroke-linecap:round;stroke-linejoin:round}
+.m-lbl{font-family:var(--fell);font-size:11.5px;fill:#4A3520;font-style:italic;letter-spacing:.3px}
+.m-wlbl{font-family:var(--fell);font-size:11.5px;fill:#2F5560;font-style:italic;letter-spacing:.5px}
+.m-hood{font-family:var(--fell);font-size:15px;fill:#8A7350;letter-spacing:3px}
+.m-dl{font-family:var(--fell);font-size:15.5px;font-weight:400;fill:#2A1D10;paint-order:stroke;stroke:#EBDCB2;stroke-width:4.5px;stroke-linejoin:round}
+.paper{background:
+  radial-gradient(ellipse at 15% 25%,rgba(170,120,55,.20),transparent 45%),
+  radial-gradient(ellipse at 85% 80%,rgba(140,95,40,.24),transparent 50%),
+  radial-gradient(ellipse at 70% 15%,rgba(190,150,80,.14),transparent 40%),
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .14 0 0 0 .26 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+  #E9D8AC !important;border-color:#7A5C34 !important}
+.paper::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;box-shadow:inset 0 0 70px 14px rgba(110,70,25,.38)}
+.paper::after{content:"";position:absolute;inset:7px;pointer-events:none;z-index:2;border:1.5px solid #6B4F2C;border-radius:8px;outline:1px solid #6B4F2C;outline-offset:3px}
+.compass{position:absolute;left:14px;top:14px;width:62px;height:62px;z-index:3;pointer-events:none}
+.mtitle{position:absolute;left:80px;top:16px;z-index:3;pointer-events:none;font-family:var(--fell);color:#3A2814;line-height:1.05;text-shadow:0 0 6px #E9D8AC,0 0 6px #E9D8AC}
+.mtitle b{display:block;font-size:24px;font-weight:400;letter-spacing:3px;font-family:var(--fell)}
+.mtitle i{font-size:13.5px;letter-spacing:1px}
+.zoomctl{z-index:4}
+.zoomctl button{background:#F3E7C6 !important;color:#2A1D10 !important;border-color:#7A5C34 !important}
+.sheet{z-index:4;background:#F5EBCD !important;color:#2A1D10;border:1.5px solid #6B4F2C !important}
+.sheet b{font-family:var(--fell);font-weight:400;font-size:21px}
+.sheet .note{color:#5C4A33}
+.sheet .x{color:#5C4A33}
+.sheet .btn{color:#2A1D10;border-color:#7A5C34;font-size:13.5px;padding:6px 9px}
+.sheet .acts{flex-wrap:nowrap;gap:6px}
+.sheet{padding:10px 12px !important}
+.sheet .btn.primary{color:#fff;border-color:#2A1D10;background:#2A1D10}
+.mdot{cursor:pointer}
+.zoomctl{position:absolute;top:16px;right:16px;display:flex;flex-direction:column;gap:6px}
+.zoomctl button{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:22px;font-weight:700;line-height:1}
+.sheet{position:absolute;left:16px;right:16px;bottom:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.sheet .x{position:absolute;top:6px;right:8px;border:0;background:none;font-size:24px;color:var(--muted);width:36px;height:36px}
+.sheet b{font-family:var(--head);font-size:18px;display:block;padding-right:30px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted);margin:0 2px 10px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-size:15px;z-index:9}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* sketch as a 'where are we' icon */
+.hero.withsk{position:relative;padding-right:132px;min-height:132px}
+.skicon{position:absolute;right:12px;top:12px;width:112px;height:90px;background:#F6F1E4;border-radius:12px;padding:4px;--skw:#CFE0E3;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.skicon .sketch,.tripsk .sketch{width:100%;height:100%}
+.hero .where{font-size:15px;margin-top:8px;opacity:1}
+.tripcard{position:relative;padding-right:92px}
+.tripsk{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:72px;height:58px;background:#F6F1E4;border-radius:8px;padding:2px;--skw:#CFE0E3}
+@media (max-width:360px){.hero.withsk{padding-right:110px}.skicon{width:92px;height:74px}}
+/* neighborhood sketch */
+.skcard{padding:12px}
+.skbox{border-radius:10px;overflow:hidden;background:#F6F1E4;--skw:#CFE0E3;
+  background-image:repeating-linear-gradient(transparent 0 25px,rgba(70,130,170,.22) 25px 26px)}
+.sketch{display:block;width:100%;height:auto}
+.sk-area{cursor:pointer}
+.sk-area:focus-visible polygon{stroke:var(--ams);stroke-width:4}
+.sk-l{font-family:"Architects Daughter","Comic Sans MS",cursive;font-size:15.5px;fill:#1E2A35;pointer-events:none;letter-spacing:.5px}
+.sk-d{font-family:var(--head);font-size:12.5px;font-weight:700;fill:#fff;pointer-events:none}
+.sk-w{font-family:"Architects Daughter",cursive;font-size:13px;fill:#2F5560;font-style:italic;pointer-events:none}
+.sk-s{font-family:"Architects Daughter",cursive;font-size:12px;fill:#1E2A35}
+.areacard{position:relative;margin-top:10px;padding-top:2px}
+.areacard .x{position:absolute;top:-6px;right:-6px;border:0;background:none;font-size:26px;color:var(--muted);width:40px;height:40px}
+.seelist{display:flex;flex-wrap:wrap;gap:6px}
+.seelist span{background:var(--bg);border-radius:8px;padding:3px 9px;font-size:14.5px}
+/* install card */
+.alert.nudge{position:relative;padding-right:40px}
+.alert.nudge .x{position:absolute;top:2px;right:4px;border:0;background:none;font-size:24px;color:var(--muted);width:36px;height:36px}
+details.install summary{display:flex;align-items:center;gap:10px}
+details.install summary img{border-radius:9px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.steps{margin:6px 0 10px;padding-left:22px}
+.steps li{margin:3px 0}
+/* plans */
+.tag.top{background:var(--ink);color:var(--bg)}
+.tag.nb{border:1px solid var(--ams);color:var(--ams);margin-left:4px}
+.warn{display:inline-block;font-size:13.5px;font-weight:600;color:var(--markink);background:var(--mark);border-radius:6px;padding:1px 8px;margin-top:5px}
+.mlink{font-weight:600;font-size:14px;white-space:nowrap}
+.num{background:var(--ams);display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:50%;color:#fff;font-family:var(--head);font-size:13px;font-weight:700;margin-right:7px;vertical-align:1px;padding:0 4px}
+.pickrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 12px}
+.plancard{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px 8px;text-align:left;line-height:1.2;min-height:72px}
+.plancard small{display:block;color:var(--muted);font-weight:600;font-size:12.5px;margin-bottom:3px}
+.plancard b{font-family:var(--head);font-size:15.5px;font-weight:700}
+.plancard[aria-pressed="true"]{border-color:var(--pc);background:var(--pc);color:#fff}
+.plancard[aria-pressed="true"] small{color:#fff;opacity:.85}
+.glance{display:grid;grid-template-columns:40px repeat(3,minmax(0,1fr));gap:5px}
+.glance .gh{border:0;border-radius:8px;background:transparent;color:var(--pc);font-family:var(--head);font-weight:700;font-size:16px;padding:2px 0}
+.glance .gh.on{background:var(--pc);color:#fff}
+.glance .gd{display:flex;flex-direction:column;justify-content:center;line-height:1.05}
+.glance .gd b{font-family:var(--head);font-size:17px}
+.glance .gd small{font-size:11.5px;color:var(--muted)}
+.glance .gc{border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:6px 5px;font-size:13px;font-weight:600;line-height:1.2;text-align:left;min-height:44px;overflow-wrap:anywhere}
+.glance .gc.on{border-color:var(--pc);box-shadow:inset 4px 0 0 var(--pc)}
+.glance .gc.sh{color:var(--muted);font-weight:500}
+details.pday summary{list-style:none;line-height:1.2}
+details.pday summary::-webkit-details-marker{display:none}
+details.pday summary::after{content:"+";float:right;font-size:22px;color:var(--muted);margin-top:-30px}
+details.pday[open] summary::after{content:"−"}
+details.pday .sub{display:block;font-family:var(--body);font-weight:400;font-size:15px;color:var(--muted);margin-top:2px}
+.why{font-size:15.5px;margin:0 0 10px;padding:8px 10px;background:var(--bg);border-radius:8px}
+@media (prefers-reduced-motion:no-preference){.hero{transition:background .25s}}
+
+/* ---------- OLD ATLAS LOOK ---------- */
+:root[data-skin]{--paperimg:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45 0 0 0 0 .33 0 0 0 0 .16 0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+:root[data-skin] body{background-image:var(--paperimg);font-size:var(--fs,17px)}
+:root[data-skin] .card,:root[data-skin] nav.tabs,:root[data-skin] .chip,:root[data-skin] .daychip,:root[data-skin] .opt{background-image:var(--paperimg)}
+:root[data-skin] .card{border-radius:var(--rad,6px);box-shadow:0 1px 0 var(--line),0 2px 8px rgba(70,45,20,.08)}
+:root[data-skin] .sect{font-variant:small-caps;letter-spacing:1.5px;font-size:15px}
+:root[data-skin] .time{font-family:var(--timef,var(--head))}
+:root[data-skin] header.top h1{letter-spacing:var(--hls,0)}
+:root[data-skin] .hero{border-radius:var(--rad,6px);background-image:var(--paperimg);box-shadow:inset 0 0 0 3px var(--accent),inset 0 0 0 4px rgba(255,240,210,.55)}
+
+/* Old Atlas: parchment, oxblood and sea-green, IM Fell headings with Garamond text */
+:root[data-skin="atlas"]{--bg:#EDE1C6;--card:#F7EFDC;--ink:#2B2118;--muted:#6E5C46;--line:#D5C29C;--prague:#8B2E1F;--ams:#2F5F6E;--bruges:#946414;--mark:#E8C56B;--markink:#3A2A08;
+  --head:"IM Fell English",Georgia,serif;--body:"EB Garamond",Georgia,serif;--fs:18.5px;--rad:4px;--hls:.5px}
+@media (prefers-color-scheme:dark){
+ :root[data-skin="atlas"]:not([data-theme="light"]){--bg:#1E1813;--card:#2A211A;--ink:#EFE3CC;--muted:#B5A386;--line:#46382A;--prague:#D58A73;--ams:#83B4BF;--bruges:#D9AA52;--mark:#7A5F1E;--markink:#FFF1C9}
+}
+:root[data-skin="atlas"][data-theme="dark"]{--bg:#1E1813;--card:#2A211A;--ink:#EFE3CC;--muted:#B5A386;--line:#46382A;--prague:#D58A73;--ams:#83B4BF;--bruges:#D9AA52;--mark:#7A5F1E;--markink:#FFF1C9}
+/* the bottom ribbon: oxblood leather with gold tooling */
+:root[data-skin="atlas"] nav.tabs{background-color:#7A2418;border-top:2px solid #C9A24A;box-shadow:inset 0 1px 0 rgba(255,225,160,.3),0 -2px 10px rgba(60,20,10,.18)}
+:root[data-skin="atlas"] nav.tabs button{color:#F0DCC0}
+:root[data-skin="atlas"] nav.tabs button[aria-selected="true"]{color:#F6D27A}
+@media (prefers-color-scheme:dark){:root[data-skin="atlas"]:not([data-theme="light"]) nav.tabs{background-color:#4E160E}}
+:root[data-skin="atlas"][data-theme="dark"] nav.tabs{background-color:#4E160E}
+
+/* a little more color: city-colored ribbons, gold rules, color-coded facts */
+:root[data-skin="atlas"]{--ox:#8B2E1F;--gold:#B8913F;--plum:#6A3F6E;--catHistory:#8B2E1F;--catArt:#2F5F6E;--catFood:#9A6A16;--catCulture:#6A3F6E}
+@media (prefers-color-scheme:dark){:root[data-skin="atlas"]:not([data-theme="light"]){--ox:#D58A73;--gold:#D9B45E;--plum:#C79ACB;--catHistory:#E08F7A;--catArt:#86B9C4;--catFood:#DDB062;--catCulture:#C9A0CD}}
+:root[data-skin="atlas"][data-theme="dark"]{--ox:#D58A73;--gold:#D9B45E;--plum:#C79ACB;--catHistory:#E08F7A;--catArt:#86B9C4;--catFood:#DDB062;--catCulture:#C9A0CD}
+:root[data-skin="atlas"] header.top h1{color:var(--ox)}
+:root[data-skin="atlas"] header.top{padding-bottom:12px;margin-bottom:10px;background:linear-gradient(var(--gold),var(--gold)) bottom 6px left/100% 1px no-repeat,linear-gradient(90deg,var(--prague) 0 33.3%,var(--ams) 33.3% 66.6%,var(--bruges) 66.6%) bottom/100% 4px no-repeat}
+
+:root[data-skin="atlas"] .card{border-top:3px solid var(--accent)}
+:root[data-skin="atlas"] .tripcard,:root[data-skin="atlas"] .fact-card{border-top-width:1px}
+:root[data-skin="atlas"] .chip[aria-pressed="true"],:root[data-skin="atlas"] .opt[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#FFF8EA}
+:root[data-skin="atlas"] .chip{border-color:color-mix(in srgb,var(--gold) 55%,var(--line))}
+:root[data-skin="atlas"] .daychip{border-bottom:4px solid var(--c)}
+:root[data-skin="atlas"] .daychip[aria-pressed="true"]{border-bottom-color:var(--gold)}
+:root[data-skin="atlas"] .sect{color:var(--accent)}
+:root[data-skin="atlas"] .tag.top{background:var(--ox);color:#FFF4E2}
+:root[data-skin="atlas"] .tag.opt{border-color:var(--ams);color:var(--ams)}
+:root[data-skin="atlas"] .btn{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent) 7%,transparent)}
+:root[data-skin="atlas"] .btn.primary{background:var(--accent);color:#FFF8EA}
+:root[data-skin="atlas"] .item{border-top:1px dashed color-mix(in srgb,var(--gold) 50%,var(--line))}
+:root[data-skin="atlas"] .item:first-child{border-top:0}
+:root[data-skin="atlas"] .fact{border-left:4px solid var(--cc,var(--line));padding-left:12px;border-top-style:dashed}
+:root[data-skin="atlas"] .fact .cat{color:var(--cc,var(--muted))}
+/* ---------- DELFT & TULIP PALETTE (Old Atlas fonts and maps, brighter colors) ---------- */
+/* Delft & Tulip: blush white, raspberry, Delft blue, emerald, Delft-navy ribbon */
+:root[data-pal="delft"]{--bg:#FAF6F3;--card:#FFFFFF;--ink:#1C2333;--muted:#667085;--line:#E7E1DC;--prague:#C2305E;--ams:#2B59C3;--bruges:#1E8C64;--mark:#FFE3A3;--markink:#3A2A08;
+  --ox:#C2305E;--gold:#E1B04A;--catHistory:#C2305E;--catArt:#2B59C3;--catFood:#D98A1E;--catCulture:#1E8C64;--paperimg:none}
+:root[data-pal="delft"] nav.tabs{background-color:#1B2F6B;border-top-color:#E1B04A}
+:root[data-pal="delft"] header.top h1{color:#1B2F6B}
+@media (prefers-color-scheme:dark){
+ :root[data-pal="delft"]:not([data-theme="light"]){--bg:#121624;--card:#1B2133;--ink:#EEF0F6;--muted:#A2A9BC;--line:#2C3450;--prague:#EE6D97;--ams:#7EA2F2;--bruges:#4CC79A;--mark:#7A5F1E;--markink:#FFF1C9;--ox:#EE6D97;--gold:#EBC56F;--catHistory:#EE6D97;--catArt:#7EA2F2;--catFood:#F0B455;--catCulture:#4CC79A}
+ :root[data-pal="delft"]:not([data-theme="light"]) header.top h1{color:var(--ink)}
+ :root[data-pal="delft"]:not([data-theme="light"]) nav.tabs{background-color:#0F1C45}
+}
+:root[data-pal="delft"][data-theme="dark"]{--bg:#121624;--card:#1B2133;--ink:#EEF0F6;--muted:#A2A9BC;--line:#2C3450;--prague:#EE6D97;--ams:#7EA2F2;--bruges:#4CC79A;--mark:#7A5F1E;--markink:#FFF1C9;--ox:#EE6D97;--gold:#EBC56F;--catHistory:#EE6D97;--catArt:#7EA2F2;--catFood:#F0B455;--catCulture:#4CC79A}
+:root[data-pal="delft"][data-theme="dark"] header.top h1{color:var(--ink)}
+:root[data-pal="delft"][data-theme="dark"] nav.tabs{background-color:#0F1C45}
+@media (prefers-color-scheme:dark){:root[data-pal="delft"]:not([data-theme="light"]) :is(.chip,.opt)[aria-pressed="true"],:root[data-pal="delft"]:not([data-theme="light"]) .btn.primary{color:#121624}}
+:root[data-pal="delft"][data-theme="dark"] :is(.chip,.opt)[aria-pressed="true"],:root[data-pal="delft"][data-theme="dark"] .btn.primary{color:#121624}
+.c-history{--cc:var(--catHistory)} .c-art{--cc:var(--catArt)} .c-food{--cc:var(--catFood)} .c-culture{--cc:var(--catCulture)}
+:root[data-skin="atlas"] .check input{accent-color:var(--ox)}
+:root[data-skin="atlas"] .alert{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--card))}
+
+</style>
+</head>
+<body data-city="prague">
+<div class="wrap">
+  <header class="top">
+    <h1>Classy European Vacation</h1>
+    <p>Prague, Amsterdam and Bruges · Oct 10 to 24, 2026. Yellow highlight means booked.</p>
+  </header>
+  <main id="app" aria-live="polite"></main>
+</div>
+<nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+/* ---------- DATA ---------- */
+const CITY = {
+  prague:{name:"Prague",color:"var(--prague)",hotel:"Prague hotel (add name)"},
+  amsterdam:{name:"Amsterdam",color:"var(--ams)",hotel:"Sir Albert Hotel"},
+  bruges:{name:"Bruges",color:"var(--bruges)",hotel:"Hotel Martins Relais"}
+};
+
+/* t = local time (all three cities are on the same clock through Oct 24). b = booked. o = suggestion/option. q = map search. dur = minutes */
+const DAYS = [
+ {id:"d1",date:"2026-10-10",city:"prague",title:"Open Air Day",items:[
+  {t:"10:30",title:"Kathy and Lauren arrive",note:"Check in and rest."},
+  {t:"18:00",title:"Marilyn and Wittie arrive (6 to 7pm)",note:"Check in."},
+  {t:null,title:"Drinks at U Pinkasu Czech Pub",note:"First pub in Prague to serve Pilsner.",o:1,q:"U Pinkasu Prague"},
+  {t:"18:00",title:"Dinner at Na Pekle, Strahov Monastery Brewery",note:"Underground wine cellar, est. 1499, near the castle.",b:1,dur:120,q:"Na Pekle Strahov Prague"},
+  {t:"19:30",title:"Marina Restaurant on the water",note:"Italian food. Backups: Municipal House Beer Hall or Aloha Tiki Bar.",b:1,dur:120,q:"Marina Restaurant Prague"},
+  {t:null,title:"Sweeney Todd at the State Opera",note:"Showing tonight.",o:1,q:"State Opera Prague"}]},
+ {id:"d2",date:"2026-10-11",city:"prague",title:"Dark Dungeons Day",items:[
+  {t:null,title:"Breakfast near the hotel"},
+  {t:null,title:"Early museum: Dvorak Museum or Jewish Museum",o:1,q:"Jewish Museum Prague"},
+  {t:null,title:"Changing of the Guard at the castle",note:"If there's time.",o:1,q:"Prague Castle"},
+  {t:"12:00",title:"Astronomical Clock show, Old Town Square",note:"Plays on the hour.",o:1,q:"Prague Astronomical Clock"},
+  {t:"13:00",title:"Medieval underground and dungeon tour",note:"About 1.5 hours, Old Town. Arrive only 5 to 10 min early.",b:1,dur:90,q:"Old Town Prague"},
+  {t:"14:45",title:"Drink and lunch at Pivovarsky Klub Benedict",note:"Known for pork shank, 6 local beers.",o:1,q:"Pivovarsky Klub Benedict Prague"},
+  {t:"17:30",title:"Czech Philharmonic at the Rudolfinum",note:"Tickets about $30 to $55. Tight before the 7:45 dinner.",o:1,q:"Rudolfinum Prague"},
+  {t:"19:45",title:"Medieval dinner and live show at Krcma U Pavouka",note:"2 to 3 hours, unlimited drinks. Celetna 595/17.",b:1,dur:150,q:"Krcma U Pavouka Prague"},
+  {t:null,title:"Stroll back to the hotel"}]},
+ {id:"d3",date:"2026-10-12",city:"prague",title:"A Brewery of a Day",items:[
+  {t:null,title:"Breakfast at an Old Town hot spot"},
+  {t:null,title:"Museum of Decorative Arts and Saint Vitus Cathedral",o:1,q:"St Vitus Cathedral Prague"},
+  {t:null,title:"Shopping and Lauren's magnet hunt"},
+  {t:null,title:"Lunch: Lokal Dlouhaaa or U Tri Ruzi (Three Roses)",note:"Burgers at Three Roses.",o:1,q:"Lokal Dlouha Prague"},
+  {t:null,title:"Walk the Brevnov Monastery grounds first",o:1,q:"Brevnov Monastery Prague"},
+  {t:"15:00",title:"Brewery tour at Brevnov Monastery",note:"Founded 993. Markétská 1/28. Bring cash.",b:1,dur:90,q:"Brevnov Monastery Brewery Prague"},
+  {t:"17:30",title:"Dinner at Klasterni Senk (Monastery Restaurant)",b:1,dur:120,q:"Klasterni Senk Prague"},
+  {t:null,title:"Back to town: night boat ride or ghost tour",o:1}]},
+ {id:"d4",date:"2026-10-13",city:"prague",title:"Castle Day",items:[
+  {t:null,title:"Breakfast at the hotel"},
+  {t:null,title:"Prague Castle tour and Golden Lane",note:"Buildings open 9 to 5. Take vintage tram 42 for discounted tickets with a day pass.",o:1,q:"Prague Castle"},
+  {t:null,title:"Charles Bridge and the Royal Way",note:"Lauren's magnet hunt if time.",o:1,q:"Charles Bridge Prague"},
+  {t:null,title:"Lunch at U Vejvodu",note:"Live accordion nightly.",o:1,q:"U Vejvodu Prague"},
+  {t:null,title:"Drinks at U Hrocha under the castle",o:1,q:"U Hrocha Prague"},
+  {t:"18:00",title:"Dinner at U Fleku Brewery",note:"Museum open 10 to 4. Confirmed.",b:1,dur:120,q:"U Fleku Prague"},
+  {t:"20:30",title:"Tiki Taky Bar",note:"Seifertova 787/20, Zizkov. Booked through Google.",b:1,dur:90,q:"Tiki Taky Bar Prague"},
+  {t:null,title:"Nightcap at Kozicka Bar, Old Town",o:1,q:"Kozicka Bar Prague"}]},
+ {id:"d5",date:"2026-10-14",city:"amsterdam",title:"Fly in and settle into De Pijp",areas:["pijp"],items:[
+  {t:"11:15",title:"Depart Prague",note:"Arrive Amsterdam 12:45.",dur:90},
+  {t:null,title:"Check in: Sir Albert (Kathy and Lauren), Wittie and Marilyn at theirs",q:"Sir Albert Hotel Amsterdam"},
+  {t:"15:00",title:"Meet for a drink near either hotel",note:"Around 3 to 4."},
+  {t:null,title:"Albert Cuyp Market",note:"The city's biggest street market, steps from the hotel. Lauren's magnet hunt starts here.",w:"Mon to Sat, winds down late afternoon",pt:"cuyp",q:"Albert Cuyp Market Amsterdam"},
+  {t:"18:00",title:"Dinner at Cannibale Royale",note:"Ruysdaelkade 149, 1072 AR.",b:1,dur:120,pt:"cannibale",q:"Cannibale Royale Amsterdam"},
+  {t:null,title:"Evening walk to the Skinny Bridge",note:"About 15 minutes along the Amstel. The Magere Brug is lit with hundreds of lights after dark.",pt:"magere",q:"Magere Brug Amsterdam"}]},
+ {id:"d6",date:"2026-10-15",city:"amsterdam",title:"Windmills, then the old center",areas:["nieuwe","oude"],trip:"Zaanse Schans",items:[
+  {t:null,title:"Breakfast at the hotels"},
+  {t:"09:30",title:"Train to Zaanse Schans",note:"About 20 minutes from Centraal to Zaandijk Zaanse Schans, then a short walk."},
+  {t:null,title:"Windmills, clog workshop and cheese",note:"Watch a block of wood become a clog, and catch a cheese-making demo to warm up for fondue night.",top:1,w:"Clog workshop open daily",q:"Wooden Shoe Workshop Zaanse Schans"},
+  {t:"13:00",title:"Back to Centraal for lunch"},
+  {t:null,title:"Our Lord in the Attic",note:"A whole church hidden in the attic of a canal house.",top:1,pt:"attic",q:"Our Lord in the Attic Amsterdam"},
+  {t:null,title:"Oude Kerk",note:"The oldest building in Amsterdam, from around 1300.",pt:"oudekerk",q:"Oude Kerk Amsterdam"},
+  {t:null,title:"Dam Square: Royal Palace and Nieuwe Kerk",pt:"dam",q:"Royal Palace Amsterdam"},
+  {t:null,title:"Begijnhof",note:"A hidden courtyard. House no. 34 is one of the city's last wooden houses.",w:"Go before 5",pt:"begijnhof",q:"Begijnhof Amsterdam"},
+  {t:null,title:"Rembrandt House",note:"If there's energy left. His home and studio from 1639.",w:"Open until 6",pt:"rembrandt",q:"Rembrandt House Museum Amsterdam"},
+  {t:"18:30",title:"Dinner inside the Waag at Nieuwmarkt",note:"A 1488 city gate, later the weigh house where surgeons held public dissections.",pt:"waag",q:"In de Waag Amsterdam"}]},
+ {id:"d7",date:"2026-10-16",city:"amsterdam",title:"Katie arrives: the Jordaan and fondue",areas:["central","western","pijp"],items:[
+  {t:null,title:"Looier antique center",note:"Starred in the notebook. Lauren's antique and watch hunt.",w:"Fri 11 to 6",pt:"looier",q:"Antiekcentrum Amsterdam Looier"},
+  {t:null,title:"Westerkerk tower",note:"Starred in the notebook. Rembrandt is buried somewhere inside. The best view in the city.",top:1,w:"Cash only, no booking. Small groups, so expect a wait",pt:"westerkerk",q:"Westerkerk Amsterdam"},
+  {t:null,title:"Anne Frank House",note:"Prinsengracht 263.",top:1,w:"Online tickets only. Book now",pt:"annefrank",q:"Anne Frank House"},
+  {t:null,title:"Lunch at Cafe 't Smalle",note:"A tiny brown cafe right on the Egelantiersgracht.",pt:"smalle",q:"Cafe 't Smalle Amsterdam"},
+  {t:null,title:"Sint Andrieshofje",note:"A secret courtyard at Egelantiersgracht 107. Look for the blue tiles. People live here, so keep it quiet.",pt:"andries",q:"Sint Andrieshofje Amsterdam"},
+  {t:null,title:"Brouwersgracht and Cafe 't Papeneiland",note:"The prettiest canal corner in town. Papeneiland is famous for apple pie.",pt:"papeneiland",q:"Cafe 't Papeneiland Amsterdam"},
+  {t:"16:00",title:"Canal cruise and drinks",note:"Kathy can book. Go late afternoon so there's time to get back for dinner. Small open boats are the most fun."},
+  {t:"18:00",title:"Fondue dinner at Bistrot des Alpes",note:"Hobbemakade 64, a few minutes' walk from the Sir Albert. Swiss-French Alpine food: fondue, raclette, tartiflette. Katie carbo-loads two days before her race.",b:1,dur:120,pt:"alpes",q:"Bistrot des Alpes Hobbemakade 64 Amsterdam"}]},
+ {id:"d8",date:"2026-10-17",city:"amsterdam",title:"Haarlem Day",areas:[],trip:"Haarlem",items:[
+  {t:null,title:"Breakfast at your convenience"},
+  {t:null,title:"20 minute train to Haarlem",note:"The first railway in the Netherlands (1839) ran on this route."},
+  {t:null,title:"Grote Markt and Grote Kerk (St. Bavo)",note:"See the organ Mozart and Handel played, and the statue of Laurens Coster.",top:1,q:"Grote Kerk St Bavo Haarlem"},
+  {t:null,title:"Picnic cheese from Nieuwe Groenmarkt 39",q:"Nieuwe Groenmarkt 39 Haarlem"},
+  {t:null,title:"Ten Boom Museum, The Hiding Place",note:"Sold out for now. Kathy is checking for openings.",w:"Sold out for now",q:"Corrie ten Boom House Haarlem"},
+  {t:null,title:"Teylers Museum: fossils and scientific instruments",note:"Aunt Merm's dream. Others can grab a drink.",q:"Teylers Museum Haarlem"},
+  {t:null,title:"Scenic canal cruise",note:"About $20 to $30."},
+  {t:"19:00",title:"Dinner at Jopenkerk craft brewery",b:1,dur:120,q:"Jopenkerk Haarlem"},
+  {t:null,title:"Train back, walk to the hotels"}]},
+ {id:"d9",date:"2026-10-18",city:"amsterdam",title:"Cheer Katie on!",areas:["museum","central"],items:[
+  {t:null,title:"Cheer Katie on!",note:"The course passes Vondelpark, the Rijksmuseum and the Heineken Experience, a few minutes from the hotel. Trams get rerouted, so walk.",top:1,pt:"rijks",q:"Rijksmuseum Amsterdam"},
+  {t:null,title:"Van Gogh Museum or the Rijksmuseum",note:"Pick one. They're across the square from each other.",w:"Book timed tickets",pt:"vangogh",q:"Van Gogh Museum Amsterdam"},
+  {t:null,title:"Coster Diamonds",note:"Watch the polishers. Coster recut the Koh-i-Noor.",pt:"coster",q:"Coster Diamonds Amsterdam"},
+  {t:null,title:"Stroll Vondelpark",pt:"vondelpark",q:"Vondelpark Amsterdam"},
+  {t:null,title:"Leidseplein and Cafe Americain",note:"A grand Art Deco cafe for a drink.",pt:"american",q:"Hotel Americain Amsterdam"},
+  {t:null,title:"Kattenkabinet",note:"A canal house full of cat art, with real cats.",w:"Sun 12 to 5",pt:"katten",q:"Kattenkabinet Amsterdam"},
+  {t:null,title:"Celebration dinner",note:"Nothing booked. Leidseplein and De Pijp are full of options close to the hotel."},
+  {t:null,title:"Bars: Three Little Bottles, Bar Odenoff, Cafe Eddy (darts), Lab 111, Belly of the Beast (tiki), Cafe Old Sailor",o:1},
+  {t:null,title:"Backstage Bar: Bohemian Rhapsody karaoke encore",o:1,q:"Backstage Bar Amsterdam"}]},
+ {id:"d10",date:"2026-10-19",city:"amsterdam",title:"Delft, then a windmill farewell",areas:["plantage"],trip:"Delft",items:[
+  {t:"09:30",title:"Direct train to Delft",note:"About an hour from Centraal."},
+  {t:null,title:"Royal Delft",note:"The last original Delft Blue factory. Watch the painters, or paint your own in a workshop.",top:1,w:"Open daily 9:30 to 5. Book a workshop ahead",q:"Royal Delft"},
+  {t:null,title:"Lunch on the Markt",q:"Markt Delft"},
+  {t:null,title:"Nieuwe Kerk, Delft",note:"Climb the tower. William of Orange is buried here.",q:"Nieuwe Kerk Delft"},
+  {t:null,title:"Train back to Amsterdam"},
+  {t:null,title:"Farewell beer under the De Gooyer windmill",note:"Brouwerij 't IJ's taproom sits right next to a 1725 windmill.",w:"Open until 10",pt:"gooyer",q:"Brouwerij 't IJ"},
+  {t:null,title:"Pack tonight",note:"The train to Bruges leaves around 9."}]},
+ {id:"d11",date:"2026-10-20",city:"bruges",title:"On to Bruges",items:[
+  {t:"09:00",title:"Leave Amsterdam for Bruges",note:"Arrive around noon (12:26pm)."},
+  {t:null,title:"Check in: Hotel Martins Relais",q:"Hotel Martins Relais Bruges"},
+  {t:"18:30",title:"Dinner at Brasserie Cambrinus",note:"Traditional Belgian food, 400+ beers.",b:1,dur:120,q:"Brasserie Cambrinus Bruges"},
+  {t:null,title:"The dark side of Bruges: ghosts and murder tour",o:1}]},
+ {id:"d12",date:"2026-10-21",city:"bruges",title:"Open: the classics",items:[
+  {t:null,title:"Climb the Belfry",o:1,q:"Belfry of Bruges"},
+  {t:null,title:"Market Square, Burg Square, Basilica of the Holy Blood",note:"Don't eat in Market Square. Overpriced.",o:1,q:"Burg Square Bruges"},
+  {t:null,title:"De Halve Maan brewery tour",note:"Free beer with tour. Hourly 11 to 4, 45 min.",o:1,q:"De Halve Maan Bruges"},
+  {t:null,title:"Sint-Jan Hospital Museum",note:"Free harp concert, 3x a day Tue to Sat, 40 min.",o:1,q:"Sint-Janshospitaal Bruges"},
+  {t:null,title:"Waffles at Chez Albert",o:1,q:"Chez Albert Bruges"}]},
+ {id:"d13",date:"2026-10-22",city:"bruges",title:"Open: Dunkirk or Ghent",open:"vote-c",items:[
+  {t:null,title:"Option: Dunkirk by rental car",note:"53 min drive, beachside. Train takes 2 to 3 hours.",o:1,q:"Dunkirk"},
+  {t:null,title:"Option: Ghent",o:1,q:"Ghent"},
+  {t:null,title:"Option: stay in Bruges (bikes, windmills, canal boat tour)",o:1}]},
+ {id:"d14",date:"2026-10-23",city:"bruges",title:"Open: crafts and canals",items:[
+  {t:null,title:"Kantcentrum lace-making demo",note:"Lauren wants to learn this old handcraft.",o:1,q:"Kantcentrum Bruges"},
+  {t:null,title:"Church of Our Lady: Michelangelo's Madonna",o:1,q:"Church of Our Lady Bruges"},
+  {t:null,title:"Princely Beguinage Ten Wijngaerde",note:"Est. 1245. Quiet gardens.",o:1,q:"Begijnhof Bruges"},
+  {t:null,title:"Friet Museum, Torture Museum or Diamond Museum",o:1,q:"Friet Museum Bruges"},
+  {t:null,title:"Boat canal tour, Lauren's magnet and rock hunts",o:1}]},
+ {id:"d15",date:"2026-10-24",city:"bruges",title:"Heading home",items:[
+  {t:null,title:"We sadly depart."}]}
+];
+
+const PLACES = {
+ prague:[
+  ["Na Pekle (Strahov Monastery)","book","Booked Oct 10, 6pm. Wine cellar est. 1499.","Na Pekle Strahov Prague"],
+  ["Marina Restaurant","book","Booked Oct 10, 7:30pm.","Marina Restaurant Prague"],
+  ["Medieval underground and dungeon tour","book","Booked Oct 11, 1pm.","Old Town Prague"],
+  ["Krcma U Pavouka","book","Booked Oct 11, 7:45pm. Medieval dinner.","Krcma U Pavouka Prague"],
+  ["Brevnov Monastery Brewery","book","Booked Oct 12, 3pm. Bring cash.","Brevnov Monastery Brewery Prague"],
+  ["Klasterni Senk","book","Booked Oct 12, 5:30pm.","Klasterni Senk Prague"],
+  ["U Fleku","book","Booked Oct 13, 6pm.","U Fleku Prague"],
+  ["Tiki Taky Bar","book","Booked Oct 13, 8:30pm.","Tiki Taky Bar Prague"],
+  ["Prague Castle and Golden Lane","sight","Oct 13.","Prague Castle"],
+  ["Charles Bridge","sight","","Charles Bridge Prague"],
+  ["Astronomical Clock","sight","Show on the hour.","Prague Astronomical Clock"],
+  ["St. Vitus Cathedral","sight","","St Vitus Cathedral Prague"],
+  ["Dancing House Glass Bar","bar","Terrace views.","Dancing House Prague"],
+  ["U Pinkasu","bar","First Pilsner pub, est. 1843.","U Pinkasu Prague"],
+  ["U Hrocha","bar","Tiny pub under the castle.","U Hrocha Prague"],
+  ["Kozicka Bar","bar","Cellar bar, local favorite.","Kozicka Bar Prague"],
+  ["Hemingway Bar","bar","200+ rums, speakeasy.","Hemingway Bar Prague"],
+  ["U Vejvodu","food","Lunch Oct 13, accordion music.","U Vejvodu Prague"],
+  ["Lokal Dlouhaaa","food","Beer from 12 tanks.","Lokal Dlouha Prague"],
+  ["Pivovarsky Klub Benedict","food","Pork shank, 6 local beers.","Pivovarsky Klub Benedict Prague"]],
+ amsterdam:[
+  ["Sir Albert Hotel","book","Home base for Kathy and Lauren.","Sir Albert Hotel Amsterdam"],
+  ["Cannibale Royale","book","Booked Oct 14, 6pm.","Cannibale Royale Amsterdam"],
+  ["Jopenkerk, Haarlem","book","Booked Oct 17, 7pm.","Jopenkerk Haarlem"],
+  ["Bistrot des Alpes (fondue)","book","Booked Oct 16, 6pm. Hobbemakade 64, near the hotel.","Bistrot des Alpes Hobbemakade 64 Amsterdam"],
+  ["Grote Kerk (St. Bavo), Haarlem","sight","Oct 17. Mozart and Handel organ.","Grote Kerk St Bavo Haarlem"],
+  ["Teylers Museum, Haarlem","sight","Oct 17.","Teylers Museum Haarlem"],
+  ["Ten Boom Museum, Haarlem","sight","Sold out, checking.","Corrie ten Boom House Haarlem"],
+  ["Van Gogh Museum","sight","","Van Gogh Museum Amsterdam"],
+  ["Rembrandt House Museum","sight","","Rembrandt House Museum Amsterdam"],
+  ["Our Lord in the Attic","sight","Hidden 17th century church.","Our Lord in the Attic Amsterdam"],
+  ["Zaanse Schans","sight","Oct 15 morning. Windmills and clogs.","Zaanse Schans"],
+  ["Royal Delft","sight","Oct 19. Delft Blue pottery.","Royal Delft"],
+  ["Cafe 't Papeneiland","food","Oct 16. Famous apple pie.","Cafe 't Papeneiland Amsterdam"],
+  ["Three Little Bottles","bar","","Three Little Bottles Amsterdam"],
+  ["Bar Odenoff","bar","","Bar Odenoff Amsterdam"],
+  ["Cafe Eddy (darts)","bar","","Cafe Eddy Amsterdam"],
+  ["Belly of the Beast","bar","Tiki bar.","Belly of the Beast Amsterdam"],
+  ["Backstage Bar","bar","Karaoke encore.","Backstage Bar Amsterdam"],
+  ["Magnets, watches, antiques","hunt","Lauren's hunt. Ask hotel staff for the best flea markets.","antique shops Amsterdam"]],
+ bruges:[
+  ["Hotel Martins Relais","book","Check in Oct 20.","Hotel Martins Relais Bruges"],
+  ["Brasserie Cambrinus","book","Booked Oct 20, 6:30pm.","Brasserie Cambrinus Bruges"],
+  ["Belfry","sight","Climb it.","Belfry of Bruges"],
+  ["Burg Square and Basilica of the Holy Blood","sight","","Burg Square Bruges"],
+  ["Church of Our Lady","sight","Michelangelo's Madonna.","Church of Our Lady Bruges"],
+  ["Sint-Jan Hospital Museum","sight","Free harp concert Tue to Sat.","Sint-Janshospitaal Bruges"],
+  ["Princely Beguinage","sight","Est. 1245.","Begijnhof Bruges"],
+  ["De Halve Maan Brewery","sight","Free beer with tour.","De Halve Maan Bruges"],
+  ["Kantcentrum (lace)","hunt","Lace-making demo.","Kantcentrum Bruges"],
+  ["Cafe Vlissinghe","food","Est. 1515, oldest tavern.","Cafe Vlissinghe Bruges"],
+  ["Chez Albert","food","Waffles.","Chez Albert Bruges"],
+  ["Het Hof van Rembrandt","food","Flemish beef stew.","Het Hof van Rembrandt Bruges"],
+  ["Mozart Brugge","food","All-you-can-eat ribs.","Mozart Brugge"],
+  ["Le Trappiste","bar","27 beers on tap, cellar bar.","Le Trappiste Bruges"],
+  ["'t Brugs Beertje","bar","Beer and cheese.","'t Brugs Beertje Bruges"],
+  ["Groot Vlaenderen","bar","Velvet speakeasy.","Groot Vlaenderen Bruges"],
+  ["De Garre","bar","Great beer.","De Garre Bruges"],
+  ["Oda Rooftop","bar","Cocktails with a view.","Oda Rooftop Bruges"]]
+};
+const CATS = {book:["Booked","#E0B400"],sight:["Sights","var(--ams)"],food:["Food","var(--prague)"],bar:["Bars","#7A4FA3"],hunt:["Lauren's hunts","#2E8B57"]};
+
+const FACTS = {
+ prague:[
+  ["history","The Astronomical Clock is old","It was first installed in 1410, and it is the oldest astronomical clock still running. Watch the hourly show with the Twelve Apostles."],
+  ["food","Pilsner started 3 hours away","Pilsner was first brewed in 1842 in Plzen. U Pinkasu, from the plan, was the first Prague pub to serve it in 1843."],
+  ["history","A bridge built by numerology","Charles IV laid the first stone of Charles Bridge in 1357, on 9 July at 5:31 am. Written out, that is 1-3-5-7-9-7-5-3-1, a palindrome chosen for luck. Legend says eggs were mixed into the mortar to make it stronger."],
+  ["history","The Defenestrations of Prague","In 1618, angry nobles threw two royal officials out of a castle window. They survived, landing in a pile of manure. It helped spark the Thirty Years' War."],
+  ["art","Mozart's Don Giovanni","It premiered in 1787 at the Estates Theatre, with Mozart conducting. Prague loved him when Vienna was cooler on him."],
+  ["culture","Golden Lane","The tiny colorful houses by the castle were built for castle guards in the 1500s. Franz Kafka stayed in house no. 22 for a while."],
+  ["food","U Fleku has brewed since 1499","It is known for a dark lager brewed on site. The same year as the wine cellar at Na Pekle."],
+  ["art","Dancing House","Frank Gehry and Vlado Milunic designed it in the 1990s. Locals call it Fred and Ginger, after the dancers."],
+  ["culture","Czech beer culture","Czechs drink more beer per person than almost anyone. A pub is a living room, and you often get refills until you put a coaster on your glass."]],
+ amsterdam:[
+  ["history","A palace on 13,659 tree trunks","Amsterdam is built on soggy ground, so buildings stand on wooden poles driven down to firmer sand. The Royal Palace on the Dam needed 13,659 of them. Some houses lean because their poles have sunk.",1,"New Side"],
+  ["culture","Skinny houses, tipsy fronts","Houses were taxed by the width of their front, so people built tall, deep and skinny, with stairs like ladders. Furniture goes in through the windows on the hook at the top, and many fronts lean forward on purpose so the load doesn't bang the glass. A 1565 law said: no more than 1 in 25.",1,"Architecture"],
+  ["history","The house as wide as a door","The Trip brothers, rich arms dealers, built a mansion in 1662 with chimneys shaped like cannons. Legend says their coachman sighed that he'd be happy with a house as wide as their front door. Across the canal at no. 26 stands one, about 2.4 meters wide.",1,"Old Side"],
+  ["history","A secret church in the attic","When Catholic services were banned, a merchant built a whole church, organ and all, in the top floors of his canal house. Everyone knew. Nobody said a word.",0,"Old Side"],
+  ["history","Rembrandt is in there somewhere","Rembrandt died broke in 1669 and was buried in a rented grave in the Westerkerk. Nobody knows exactly where he is. Anne Frank wrote about the comfort of hearing its bells.",1,"Jordaan"],
+  ["history","Dissections in the city gate","The Waag at Nieuwmarkt was a city gate in 1488, then the weigh house. Upstairs, the surgeons' guild cut up executed criminals in front of paying audiences, and they ordered Rembrandt's Anatomy Lesson of Dr. Tulp. You can have dinner there now.",1,"Old Side"],
+  ["history","The world's first stock","The Dutch East India Company, run from the Oostindisch Huis, was the first company to sell shares to the public, in 1602. Amsterdam basically invented the stock market.",1,"Old Side"],
+  ["history","A miracle on the shopping street","In 1345 a dying man brought up his communion bread, and it was tossed in the fire. Next morning it was found unharmed. Pilgrims flocked to Kalverstraat for centuries, and a silent night procession still walks the route every March.",1,"New Side"],
+  ["history","Jail cells under a bridge","Torensluis, the widest bridge in the city, has old prison cells built into its foundations. Prisoners were kept under the feet of everyone crossing the canal.",1,"New Side"],
+  ["culture","Where Santa Claus comes from","Sinterklaas, St. Nicholas, is the patron saint of Amsterdam and of sailors. Dutch settlers took him to New Amsterdam, where 'Sinterklaas' slowly turned into 'Santa Claus.' Dutch kids still get their presents on December 5.",1,"New Side"],
+  ["food","No hands for the first sip","In an old jenever tasting room, your glass of Dutch gin is filled right to the brim. You bend down and take the first sip off the bar with your hands behind your back.",1,"Jordaan"],
+  ["food","Why brown cafes are brown","Brown cafes got their color from centuries of tobacco smoke soaking into the walls and ceilings. Nobody repainted. Now the brown is the charm.",1,"Jordaan"],
+  ["culture","Gezellig","A Dutch word with no English twin. Cozy, friendly, together time. Brown cafes and fondue nights are peak gezellig.",0,""],
+  ["history","The Skinny Bridge","The Magere Brug means 'skinny bridge,' and it really was narrow. Legend says two sisters named Mager built it so they could visit each other across the Amstel. At night it's lit with hundreds of little lights.",1,"Eastern Canal Ring"],
+  ["history","The coffee plant that took over the world","In 1706 a VOC ship brought a coffee plant to the Hortus Botanicus. A cutting went to the King of France, and its descendants are said to be the ancestors of much of the coffee grown in Central and South America.",1,"Plantage"],
+  ["culture","A museum run by cats","The Kattenkabinet is a grand canal house full of art about cats, including work by Picasso and Rembrandt. Real cats wander the rooms like they own the place. They do.",1,"Canal Ring"],
+  ["history","The diamond in the Crown Jewels","Coster Diamonds, founded in 1840, recut the famous Koh-i-Noor in 1852. Today it sits in the British Crown Jewels.",1,"Museum Quarter"],
+  ["culture","Beer under a windmill","De Gooyer, from 1725, is one of only a handful of windmills left in the city. Brouwerij 't IJ, one of Amsterdam's first craft breweries, pours beer at its feet.",1,"Plantage"],
+  ["art","Delft Blue started as a knockoff","When Chinese porcelain became the hot luxury in the 1600s, Delft potters copied it. Their blue-and-white fakes became famous in their own right. Vermeer was from Delft too.",0,""],
+  ["history","Mozart, age 10, in Haarlem","The giant Muller organ at St. Bavo was built in 1738. Handel played it, and in 1766 a 10-year-old Mozart did too.",0,"Haarlem"],
+  ["history","Haarlem says it invented printing","The statue on Haarlem's Grote Markt is Laurens Coster, who Haarlem says printed with movable type around 1423, before Gutenberg. Historians are skeptical. Haarlem is not.",1,"Haarlem"],
+  ["culture","Haarlem, meet Harlem","New York's Harlem is named after Haarlem, by the Dutch settlers of New Amsterdam.",0,"Haarlem"],
+  ["history","The Hiding Place","In WWII, the ten Boom family in Haarlem hid Jewish people and resistance members behind a false wall in Corrie's bedroom. Corrie survived a concentration camp and told the story in The Hiding Place.",0,"Haarlem"],
+  ["history","Your plane landed on a lake","Schiphol Airport sits on the bottom of a drained lake, the Haarlemmermeer, a few meters below sea level. Giant steam pumps like De Cruquius pumped it dry around 1850.",1,"Haarlem"]],
+ bruges:[
+  ["history","Why Bruges looks medieval","It was a rich trading port until the Zwin channel silted up in the 1400s. The money moved away, so nobody rebuilt it."],
+  ["history","The Belfry","The tower is about 83 meters tall with 366 steps up. The carillon bells still ring out over the market."],
+  ["art","Michelangelo in Bruges","The Madonna and Child in the Church of Our Lady is said to be one of the few Michelangelo sculptures to leave Italy in his lifetime."],
+  ["art","Jan van Eyck","The painter lived and worked in Bruges. The city is a home of Flemish Primitive painting. Memling's works are in the Sint-Jan Hospital."],
+  ["food","Belgian fries","The Belgians say they invented fries, and the Friet Museum in Bruges tells the story. Try them with mayo."],
+  ["food","The beer pipeline","De Halve Maan Brewery built an underground pipeline, about 3 km long, to move beer to a bottling plant outside the center."],
+  ["culture","In Bruges (the movie)","The 2008 dark comedy was filmed here, which is why the trip has a 'dark side of Bruges' tour."]]
+};
+
+const CHECK = [
+ ["Prague",["Magnet hunt","Taste Pilsner at U Pinkasu","Dungeon tour","Brewery tour at Brevnov","Golden Lane","See the Astronomical Clock strike","Charles Bridge walk"]],
+ ["Amsterdam",["Magnet, watch and antique hunt","Hear the Haarlem organ","Make clogs / Delft pottery","Cheese-making demo","Fondue night","Canal cruise","Bohemian Rhapsody karaoke encore","Find the tiny house opposite the Trippenhuis","Cross the Skinny Bridge at night","Beer under the De Gooyer windmill","Meet the cats at the Kattenkabinet"]],
+ ["Bruges",["Climb the Belfry","Lace-making demo","Ghost and murder tour","Halve Maan beer","Waffles and fries","Rock hunt","Michelangelo's Madonna"]]
+];
+const VOTES = {
+ "vote-c":{label:"Oct 22 (Bruges)",opts:["Dunkirk","Ghent","Stay in Bruges"]}
+};
+const CANCEL_BY = "2026-10-09";
+
+/* ---------- NEIGHBORHOOD SKETCH (traced from the notebook drawing) ---------- */
+const AREAS={
+ western:{name:"Western Canal",full:"Western Canal Ring",nl:"Jordaan",tags:["Jordaan"],lab:[545,555,0],
+  desc:"Once the poor workers' quarter, now the prettiest canals in town.",
+  see:["Anne Frank House","Westerkerk tower (starred)","Egelantiersgracht and Sint Andrieshofje","Bloemgracht","Brown cafes and jenever","Brouwersgracht","Western Islands"],
+  poly:[[465,380],[670,395],[688,470],[765,492],[705,600],[662,705],[560,690],[470,688],[305,760],[420,520]]},
+ nieuwe:{name:"Nieuwe Zijde",full:"Nieuwe Zijde",nl:"New Side",tags:["New Side"],lab:[797,632,-62],bd:[762,758],
+  desc:"The medieval center west of the Damrak, from the station to the Begijnhof.",
+  see:["Begijnhof and wooden house no. 34","Dam Square, Royal Palace and Nieuwe Kerk","National Monument","Torensluis","Central Station","Sint Nicolaaskerk"],
+  poly:[[765,492],[840,560],[975,585],[945,650],[860,710],[740,800],[715,870],[625,790],[662,705],[705,600]]},
+ oude:{name:"Oude Zijde",full:"Oude Zijde",nl:"Old Side",tags:["Old Side"],lab:[925,805,-12],
+  desc:"The oldest part of the city, from the Oude Kerk to the Waterlooplein market.",
+  see:["Oude Kerk","Red Light District","The Waag at Nieuwmarkt","Oostindisch Huis","Trippenhuis","Oudemanhuispoort","Rembrandthuis","Waterlooplein market"],
+  poly:[[945,650],[1010,720],[1145,800],[1110,830],[905,905],[835,860],[740,800],[860,710]]},
+ plantage:{name:"Plantage",full:"Plantage",nl:"Gardens and docks",tags:["Plantage"],lab:[1085,915,-10],
+  desc:"Leafy and calm, with the zoo, the botanical garden and the old harbor.",
+  see:["Hortus Botanicus","Artis Zoo","De Gooyer windmill and Brouwerij 't IJ","Scheepvaart Museum","Werf 't Kromhout","Amstelsluizen"],
+  poly:[[1145,800],[1185,810],[1285,935],[1150,980],[950,1010],[905,905],[1110,830]]},
+ central:{name:"Central Canal",full:"Central Canal Ring",nl:"Leidsebuurt",tags:["Canal Ring"],lab:[480,830,0],
+  desc:"Grand canal houses, the Golden Bend and the buzz of Leidseplein.",
+  see:["Leidseplein and the American Hotel","Golden Bend and the Kattenkabinet","Looier antiques (starred)","Felix Meritis","De Krijtberg","Metz & Co cupola","De Melkweg"],
+  poly:[[305,760],[470,688],[560,690],[662,705],[625,790],[715,870],[585,990],[430,940],[350,830]]},
+ eastern:{name:"Eastern Canal",full:"Eastern Canal Ring",nl:"Amstelveld",tags:["Eastern Canal Ring"],lab:[740,1030,0],
+  desc:"Bridges over the Amstel and the cafes of Rembrandtplein.",
+  see:["Museum Willet-Holthuysen (starred)","Magere Brug (Skinny Bridge)","Blauwbrug","Munttoren","Rembrandtplein: Cafe Schiller and De Kroon"],
+  poly:[[715,870],[835,860],[905,905],[950,1010],[890,1080],[850,1120],[625,1150],[585,990]]},
+ museum:{name:"Museum Quarter",full:"Museum Quarter",nl:"Museumkwartier",tags:["Museum Quarter"],lab:[420,1090,0],
+  desc:"Big museums and Vondelpark. Katie's race runs through here.",
+  see:["Rijksmuseum","Van Gogh Museum","Stedelijk (modern art)","Coster Diamonds","Concertgebouw","Vondelpark and the Vondelkerk"],
+  poly:[[220,1040],[430,940],[585,990],[625,1150],[450,1168],[310,1180],[270,1120]]},
+ pijp:{name:"De\u00a0Pijp",full:"De Pijp",nl:"Hotel neighborhood",tags:["De Pijp"],lab:[800,1165,0],bd:[880,1215],added:1,
+  desc:"Not in the sketch. Added so the hotel has a home. South of the canal ring.",
+  see:["Sir Albert Hotel","Albert Cuyp Market","Cannibale Royale"],
+  poly:[[625,1150],[850,1120],[945,1060],[975,1245],[650,1245]]}
+};
+const SK=(x,y)=>[((x-150)*0.45).toFixed(1),((y-215)*0.45).toFixed(1)];
+/* opts: hi = areas to highlight, mini = small icon (no labels), col = highlight color */
+function sketchSvg(o){
+  o=o||{}; const hi=o.hi||[], col=o.col||"#1E6A8C", mini=!!o.mini;
+  const pts=a=>a.map(([x,y])=>SK(x,y).join(",")).join(" ");
+  const path=a=>"M"+a.map(([x,y])=>SK(x,y).join(" ")).join(" L");
+  const ij=path([[640,245],[720,330],[790,450],[880,535],[1000,572],[1150,545],[1330,505]]);
+  const ij2=path([[1000,572],[1180,585],[1330,640]]);
+  const amstel=path([[712,830],[800,875],[905,960],[950,1070],[985,1250]]);
+  const sw=mini?1.6:1;
+  let s=`<svg class="sketch" viewBox="${mini?"20 50 500 400":"0 0 540 480"}" role="img" aria-label="${o.aria||"Sketch map of Amsterdam's central neighborhoods"}">`;
+  if(!mini){
+    s+=`<rect x="8" y="8" width="524" height="464" fill="none" stroke="#23303D" stroke-width="2"/><rect x="16" y="16" width="508" height="448" fill="none" stroke="#23303D" stroke-width="1.2"/>`;
+    s+=[[16,40,16,16,40,16],[500,16,524,16,524,40],[16,440,16,464,40,464],[500,464,524,464,524,440]].map(c=>`<polyline points="${c[0]},${c[1]} ${c[2]},${c[3]} ${c[4]},${c[5]}" fill="none" stroke="#23303D" stroke-width="4" stroke-linecap="round"/>`).join("");
+  }
+  s+=`<path d="${ij}" fill="none" stroke="#23303D" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/><path d="${ij2}" fill="none" stroke="#23303D" stroke-width="22" stroke-linecap="round"/>`;
+  s+=`<path d="${ij}" fill="none" stroke="var(--skw)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><path d="${ij2}" fill="none" stroke="var(--skw)" stroke-width="18" stroke-linecap="round"/>`;
+  s+=`<path d="${amstel}" fill="none" stroke="#23303D" stroke-width="15" stroke-linecap="round"/><path d="${amstel}" fill="none" stroke="var(--skw)" stroke-width="11" stroke-linecap="round"/>`;
+  if(!mini){
+    s+=[[700,300],[770,420],[880,520],[1060,560],[1200,540],[1250,600],[860,925],[955,1150]].map(([x,y])=>{const [a,b]=SK(x,y);return `<path d="M${a} ${b} q4 -4 8 0 t8 0" fill="none" stroke="#23303D" stroke-width="1.3" opacity=".7"/>`}).join("");
+    const [ix,iy]=SK(1190,470), [ax,ay]=SK(1010,1235);
+    s+=`<text class="sk-w" x="${ix}" y="${iy}">het IJ</text><text class="sk-w" x="${ax}" y="${ay}" text-anchor="start">Amstel</text>`;
+  }
+  Object.entries(AREAS).forEach(([id,A])=>{
+    const on=hi.includes(id)||o.sel===id;
+    const words=A.name.split(" "), [lx,ly]=SK(A.lab[0],A.lab[1]);
+    s+=`<g class="${mini?"":"sk-area"}" ${mini?"":`data-area="${id}" tabindex="0" role="button" aria-label="${A.full}"`}>
+      <polygon points="${pts(A.poly)}" fill="${on?col:"transparent"}" fill-opacity="${on?(mini?.85:.5):0}" stroke="#23303D" stroke-width="${(on?3.2:2.2)*sw}" stroke-linejoin="round" ${A.added?`stroke-dasharray="${7*sw} ${5*sw}"`:""}/>
+      ${mini?"":`<text class="sk-l" transform="translate(${lx} ${ly}) rotate(${A.lab[2]})" text-anchor="middle">${words.map((w,i)=>`<tspan x="0" dy="${i?17:-(words.length-1)*8}">${w.toUpperCase()}</tspan>`).join("")}</text>`}
+    </g>`;
+  });
+  const [hx,hy]=SK(675,1222);
+  s+=`<g pointer-events="none"><circle cx="${hx}" cy="${hy}" r="${mini?9:5}" fill="#23303D" stroke="#F6F1E4" stroke-width="${mini?3:0}"/>${mini?"":`<text class="sk-s" x="${(+hx+8).toFixed(1)}" y="${(+hy+4).toFixed(1)}">hotel</text>`}</g>`;
+  return s+`</svg>`;
+}
+const dayNum=day=>parse(day.date).d;
+const areaNames=day=>(day.areas||[]).map(a=>AREAS[a].full);
+const andList=a=>a.length<3?a.join(" and "):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
+function whereLine(day){
+  const n=areaNames(day);
+  return day.trip?(n.length?`Day trip to ${day.trip}, back for ${andList(n)}`:`Day trip to ${day.trip}`):andList(n);
+}
+function dayPts(day){let n=0;return day.items.map(s=>s.pt?{...s,num:++n}:s)}
+
+/* ---------- EUROPE (Natural Earth 1:50m via world-atlas, projected to a 400x300 Mercator frame) ---------- */
+const EU={"W":400,"H":300,"land":"M-2,205.8L-1.3,206.1L-1.5,209L-0.8,212.6L0.2,214.4L1.4,216.4L5.5,216.2L10,217.4L15.6,217.5L23.8,219.6L27.3,218.4L30.7,215.9L37.1,214.2L37.7,213.4L34,213.7L30.5,212.1L30.1,210.4L30.5,208.8L31.8,205.3L41.8,199.6L48.8,197.8L56.2,194.7L59.9,191.5L62.4,187.3L63.2,186.4L64.2,185.6L63.2,184.1L63.9,168L64.6,165.1L66,162.7L68.3,160.9L71.6,158.8L83.8,156.1L85.6,155L95.7,148.8L101.7,145.6L104.6,144.6L106.3,144.1L110.1,143.8L113,145L116.8,145.5L119.8,143.9L122.1,145.3L124.7,144.3L122.7,143.8L119.7,142.2L115.4,143.5L112.5,142L110.1,141.8L108.5,140.6L106.9,138.6L108.1,137.3L109.1,136.8L113.6,136.6L116.9,137.4L122.8,141.8L124.3,141.7L125.9,141.2L125,140L123.5,139.4L121.4,138.2L119.7,136.6L123.7,136.1L123.1,135.2L122.6,133.7L118.3,128.7L119.1,127.2L120.2,124.3L121.5,121.8L122.6,121.1L124.4,119.4L128.2,114.2L130.7,110L132.5,105L135.1,91.1L136,88.7L137.2,86L138.9,86.6L139.9,87.3L143.9,85.3L150.8,80.1L152.8,75.6L154.7,73.5L162.6,69.4L166.9,68.2L173.6,67.8L178.5,67.1L184.3,66.8L186.5,69.4L187.8,71.3L189.8,72.3L193.1,73L192,71.3L189.8,69.4L190.2,65.4L191,62.4L193.2,58.6L195,57.6L203,57L211.7,57.2L215.3,62.9L214,65.8L216.1,67.2L217.1,66.7L217.9,64.2L218.4,61.3L219.1,60.5L221.9,62.6L222.9,64L222.9,68.7L223.9,62.4L223.1,58L223.6,53.7L224.8,51.4L225.8,50L232.1,51.6L239.2,50.8L241.9,52.4L247.9,60.7L249.9,62.1L252.5,62.5L249,60.7L241.6,50.7L239.5,49.4L236.1,49.1L233.9,48L232.6,46.5L232.3,45.1L232.4,34.9L231.1,33.4L229.4,32.9L228.4,33.5L226.3,33.6L225.9,31.3L226.4,29.5L230.6,28.3L233.4,26.8L233.5,23.9L231.7,21.7L229.6,17.7L227.2,13.9L226.9,9.4L226.7,6.1L226.2,3.7L224.7,0.2L226.9,-0.7L226.8,-2L248.6,-2L248.6,-2L246.1,0.9L245,4L247.6,3.9L249.3,4.6L250.3,5.5L251.3,6.9L250.7,8.5L251.5,12.5L251.7,13.2L255,14.3L256.4,16L257.9,18.6L258.1,22.3L256.1,24.9L254.5,26.6L260.8,25.9L261.4,27.4L262.3,29.1L265.7,27.9L274.3,32.7L279.5,30.4L280.8,30.3L281.9,34.2L280.6,38L276.1,42.2L277.1,44.8L278.6,45.3L282.9,44.8L289.6,47.3L291.1,46.5L296.6,40.7L298.7,39.5L306,38.5L307.4,36.3L310.3,34L312.2,31.6L316.7,26.8L321.3,27.6L324.1,28.5L327.1,29L329.9,34.1L336.7,39.6L343.1,39.1L345.3,44.4L346.3,50.9L348.3,52.9L350,54.2L355.2,55.6L355.4,55.7L360.7,57.9L362.8,59.2L362.6,57.8L362.1,56.6L362.4,54.7L362.2,52L357.5,50.7L354.4,50.2L353.4,50.1L350.6,50.5L347.7,49.9L347.2,47.6L347.7,45.3L346.5,43.8L345.4,42.8L345.3,41.5L345.4,40.2L350.3,43.8L354.3,47.1L355.2,47.8L358.3,48.1L365.9,44.4L379,39.7L393.1,35.2L396.4,34.7L399.7,33.7L400.9,32.1L402,31L402,302L-2,302ZM-2,14.8L-0.8,17.4L1.1,19.3L10.2,23.9L12.2,25.3L15.7,29.6L19.1,34.2L22.2,37.7L25.6,40.5L24,42L22.8,44.3L23.7,47.4L25.1,50.4L27.8,55.2L30.3,60.4L29.4,59.6L28.5,59.2L27.1,59.3L25.9,59.1L23.6,57.4L21.3,55.4L17,56.2L14.6,55.9L12.4,55.9L16.5,57L20.8,57.2L30.5,65.8L33.8,70.9L35.7,77.7L34.4,80.7L32.3,82.6L30.4,84.9L28.6,87.4L34,91.1L35.2,91L36.4,90.5L37.5,89.2L39.5,86.2L40.5,85.1L43.8,84.7L46.6,84.9L49.4,85.6L51.9,85.4L56.8,86.7L59.3,87.9L65.7,93.2L67,96.1L67.7,99.8L67.8,103.9L66.7,107.7L65.4,111.1L64.7,115.5L64.2,117.1L63.5,118.3L60.1,121.8L57.8,123.2L56.9,122.6L55.9,122.6L55.8,123.5L56.8,125.2L56.9,127.4L54.9,128.9L52.9,129.6L49.6,128.7L44.8,131.6L48.2,133.1L48.9,134.7L48.1,137.5L46,138.8L43.6,139.3L41.2,139.4L39.2,140.1L37.3,141.4L39.7,140.7L41.4,141.3L42.4,143.6L43.4,144.3L48.1,145.3L50.9,145.3L56.5,144.7L59.2,144.8L60.2,145.2L60.2,147.1L59.7,151.9L59,152.8L51.6,156.8L50.1,159.5L49.6,161.2L45.3,160.9L43.4,162.6L39.8,163.8L37.1,165.1L34.5,166.7L32.3,167.1L22.9,165.2L17.2,165.4L9.5,167.1L7.5,166.8L4.6,165.2L1.6,164.2L-1.9,163.7L-2,163.7L-2,14.8ZM-2,167L1.3,168.1L3.1,169.8L3.1,169.8L1.1,171L0.6,172.5L0.1,173.1L-1.2,173.4L-2,173.5L-2,167ZM173.2,64.2L170,65.5L169.1,65.2L169.4,64.8L172.2,64ZM163.9,66.2L159.4,66.8L157.8,66.3L157.6,65.9L158.8,65.6L162.7,65.6L163.8,66ZM145.1,72L140.8,74.8L140.4,74.4L143.2,71.9ZM150,69L147.9,69.3L146.9,68.8L152.1,67.2L155.3,66.8L155.9,67ZM139.9,81.1L137.6,83.8L136.2,83L135.9,82.4L136.5,80.3L139.9,76.8ZM118.3,131.3L120.6,133.3L121.1,133.9L121.2,134.6L118.4,135.4L115.4,133L113.4,133.5L112.6,132.4L112.6,131.6L114.7,131ZM182.4,61.4L180.3,61.5L180.9,60.5L182.9,59.7L184,59.7ZM342.8,30.1L343.4,32.8L342.7,34.1L340.1,31.9L337.5,31.9L336,35.4L334.8,35.5L330.8,32.4L330.2,30.8L330,29.6L330.6,25.1L330.5,23.7L331.8,22.2L331.9,20L334.2,17.7L336.2,17.6L336.8,19.5L337.7,20.9L341,22.4L341.5,23.1L341.9,24.1L340.3,25.9L339.8,26.9L340.3,28.5ZM287,28.7L283.4,28.8L282.1,27.2L280.7,26.8L281.5,24.8L282.4,24.1L285.8,25.5L286.9,27.9ZM218.6,14.1L218.1,14.9L218.3,9.2L220.8,3.2L221.9,3.4L220.8,5L220.5,6.1L220,8.4L220.2,9.6L226,9.9L225.3,11L219.5,11.6ZM225,17L224.1,18L221.9,17.9L220.7,17L221.1,16L222.3,15.2L223.2,15.1L224.7,15.6ZM305.5,-2L305.5,-2L305,2.8L305.1,6.5L305,9.2L304.6,13L300.3,14.6L297.5,8.9L297.5,6.6L296.6,4L296.5,1.7L295.5,-1.9L295.2,-2L305.5,-2ZM275.9,-2L275.5,0.2L271.9,3.4L267.6,3.6L263.3,2.1L257.2,-1L256.9,-2L275.9,-2ZM288.7,9.9L292.9,12.4L295.6,12.3L297.4,13.2L297.9,14.8L298.1,18.4L296.1,19.4L293.9,19L291,20.4L281.3,14.6L281.5,9.8L281.8,8L286.4,7.5ZM274.3,15.5L273.3,15.7L271.9,12.5L271.8,11.5L273.4,9.4L274.4,7.1L277.1,3.4L278.7,-0.8L279.3,-0.7L278.6,3.1L275.1,13.6ZM316,6.9L315.2,7.6L311.7,7.1L307.7,9.8L306.2,9L306.8,7.2L307.2,6.6L308.5,5.8L309.4,4.7L309.8,3L310.6,3.9L313.1,4.3L314.2,4.8L315.2,5.7ZM268.6,11.6L267.1,12.1L265.3,11.2L262.4,7.9L262.1,7.1L263.6,7.6L265.5,9.4L267,9.7L269,11.2ZM258.9,10.1L256.5,10.7L255.3,9.7L253,9.4L252.2,3.2L252.4,2.8L253.6,3.2L257.5,6.1L258.8,9.2ZM373.1,-2L375.5,-0.2L375.5,2.1L374.4,4.7L374.4,4.7L373.6,5.4L369.8,4.2L365.1,1.4L365.6,-2L373.1,-2Z","borders":"M368,163.7L367.8,164.2L367,165.1L366,165.2L364.5,164.6L363.5,163.8L363.8,161.6L363.1,161.4L362.3,160.2L362,158.7L361.1,158.1L357.8,157.5L356.8,157.1L355.9,157.5L355.3,158.4L355.7,159.4L356.3,160.2L358.1,161.6L357.9,162.2L354,163.5L351.6,165L349.4,165.7L347.1,167.2L342.5,168.8L339.2,169.3L338.6,169.7L337.3,172.4L336.5,173L335.7,172.7L335.1,172.2L334.3,172.6L333.5,173.6L332.6,173.9L331.9,173.9L330.6,176.3L326.8,177L326.4,178.3L325.6,179.7L325.1,180L323.4,179.5L321,179.1L319.7,180L318,180.4L316,180.5L313.9,182.1L311.7,184.8L310.5,187.3L309.8,188.1L308.8,185.9L307.4,184.3L306.5,183.5L305.7,183.5L305.5,183.8L305.5,185L306.4,187L307.4,188.3L307.6,189.3L308.3,191.1L309.8,193.1L312.3,194.7L314,196.2L315.2,198.4L315.2,199L314.9,199.9L314.3,200.7L313.8,201.8L312.4,204L312.8,204.9L314,206.1L315,207.5L316.2,209.8L317.9,213.8L319.1,215.5L320.7,217.2L322.2,218.5L324.5,218.4L327,220.9L329.7,224.5L331.7,226.1L333.1,226.6L334.3,227.9L335.2,229.8L335.7,230.9L336.6,231.6L339.1,231.5L342.2,234.4L344.1,236.5L345.2,238.2L344.9,238.9L344.8,241L344.8,243.3L344.5,244.4L343.1,246L342.4,246.4L341.9,246.7L337.6,244.6L337.3,245L337,245.2L335.8,251.2L335.1,252.2L333.8,253.3L331.4,254.3L329.7,254.8L328.3,255.2L324.1,257.7L322.2,259.2L320.9,261.1L320.9,262.1L323,265.2L325.4,268.5L325.4,271.3L324.3,273.4L324.1,274.3L324.8,274.6L326.1,274.7L327.2,275L327.7,276.5L327.5,279.1L327.1,281.6L326.8,282.6L325.7,282.7L323.7,281.6L322.1,280.4L321.4,279.7L321.4,278.8L321.8,278.2L321.2,277.1L319.2,276.1L317.1,276.5L315.5,277.2L314.6,277.2L313.5,276.2L311.8,275.4L309.6,274.9L308.3,274.4L307.9,274.7L308.1,276.8L307.7,277.8L296.9,279L293.6,280.1L291.3,281.6L289.5,282.3L289.1,283.2L287.3,284.4L285.3,284.7L284.8,284.4L283.6,284.9L281.5,285.5L280,285.3L279.4,284.3L278.1,282.9L277.5,281.8L277.6,281.1L274.5,281L272.6,280.2L268.5,280.4L267.5,280.1L267.4,280.4L266.7,284.6L266,286.4L264.7,288.2L263,289.2L261.7,289.3L261.8,288L262.1,286.5L261.1,286.1L259.7,285.9L259,285.5L259.2,284.3L258.9,283.6L258.3,282.7L256.8,281.7L253.8,280.1L251.7,279.2L250.9,280.1L249.4,281L247.1,280.7L246.5,281L247.2,281.4L248.8,283L248.5,285.5L246.6,289.6L245.6,292.9L245.5,295.5L245.7,296.7L246,296.7L247.9,296.9L248.8,296.9L251.6,297.5L253.9,298.5L254.4,299.6L254.6,300.9L256.4,302M262.9,302L265.5,299.3L267.1,300L267.9,302M175.5,302L175.6,301.2L176,300.5L179.9,298.6L180.8,297.8L181.3,296.8L184.4,293.3L187.4,289.7L188,288.6L188.5,287.9L188.5,287.3L188.2,286.9L186.7,286.6L186.2,285.5L187.8,283.4L189.8,282.2L191.7,282.2L192.4,282.7L192.3,283.4L193.1,284.1L194.6,284.3L196.4,284.1L198.2,283.3L199.3,281.6L199.8,280.2L202.7,278.7L204.6,279.4L209.8,279.7L213.7,279.2L216.1,278.2L219.1,278.2L221,278.8L221.4,278.7L221.9,278.5L222.4,278L224.3,277.6L224.6,277.1L224.5,276.6L224.2,276.4L221.9,276.6L221,276.3L220.8,275.4L221.5,273.9L223.2,272.7L224.7,272.4L225.7,272.7L228.2,275L228.8,275.1L229.2,274.7L229.7,274.5L230.6,274.9L231.5,276.3L231.7,276.5L237.4,276L238.7,276L242.6,278.5L246.5,281M402,181.2L400.7,180.5L400.2,179.4L401,178.3L401.9,177.3L402,177.2M402,171.1L401.9,171L396.9,172L395.6,172.6L394.8,171.8L394.3,170.5L392.9,170.3L391.3,169.1L389.2,168L387.2,167.6L383.1,166L381.5,165.9L380.6,165.4L379.6,164.1L378.8,162.8L378.4,160L375.3,158.8L372.2,158L372.1,158.4L372.2,161.1L372,162.6L370,163.5L368,163.7L368.2,163.2L370.5,158.2L371.6,155L372.8,149.2L371.3,144.6L370.9,142.5L370.3,141.5L366.1,139.3L365.8,138.5L366.4,135.4L366.1,134.1L365.1,132.8L363.8,130.1L363.2,127.8L365,125.1L365.4,123.2L366.1,120.4L366.6,118.9L366.7,118.5L365.6,117.4L365.4,116L365.6,113.8L365,112.2L363.5,111.2L362.6,109.8L362.1,108.1L362.6,105.4L363.6,101.7L361.2,97.3L355.3,92.1L352.4,88.5L352.6,86.4L353.9,84.5L356.2,82.8L357.9,79.8L358.8,76.2L358.9,75.5L359,72.9L356.3,62.4L355.9,59.8L355.5,56.6L355.4,55.7M354.4,50.2L353.9,48.3L354.3,47.1M193.1,73L192.8,76.7L192.9,83.8L192.6,85.1L191.2,88.1L189.7,93.5L189.3,97L188.8,97.8L182.7,97.7L181.9,98.4L181.7,99.1L182.1,100L181.9,100.9L181.4,101.6L181.6,102.8L182.7,104.1L184.6,105L186.7,105.1L187.8,104.9L188.5,105.8L189.3,107.3L189.3,109.2L188.9,111.6L188,113.9L185.2,116.5L183.9,117.4L182.7,117.9L182.1,118.6L181.9,119.5L182,120.2L184,122.3L183.9,122.8L183.3,123.9L182.6,124.9L177.4,127L175.3,126.8L174.1,127.9L173.7,128.1L172.4,127.1L169.3,126L168.2,126.4L167.6,127L165.7,127.7L164.3,128.9L164.3,130.4L166.7,134.3L167.6,135L167.6,136.5L168.7,138.3L170,140.6L170.1,142L170,143.4L169.3,145.5L167.2,150.3L167.2,151.2L167.4,151.9L168.2,152.1L168.6,152.5L168.5,153.1L164.6,156.4L164.1,157L162.5,156.8L162.3,157.4L162.4,158.3L163.1,159.1L164.5,159.5L165.7,160.3L166.7,161.9L165.3,167.6L163,167.5L160.9,167.4L159.7,167.3L158.5,166.7L157.9,165.6L157.2,164.2L157.4,163.3L159.5,161L159.8,160.3L159.5,160L159.8,158.9L161.4,155.4L161.5,153.9L160.9,152.9L159.8,152.3L156.5,151.2L154.9,149.8L154.2,148.4L153.5,148L152.4,148.5L149.7,149L147.5,148.3L144.8,145.8L144.2,143.6L143.9,141.9L143.2,141.3L142.3,142.2L141.3,143.6L139,143.7L138.4,143.4L138.3,142.6L138.2,141.9L137.5,141L137,140.5L134.1,143L133.1,143L131.7,142L131.1,141.1L129.7,141.6L128.3,142.8L128.8,145L128.1,145.4L126.5,145.2L124.7,144.3L124.4,145.7L123.5,147.3L120.5,149.4L117.3,150.9L115.7,150.7L114.5,149.9L113.9,149.2L112.2,148.4L109.9,148L108.4,148.9L107.4,149.6L106.5,149.5L105.8,148.9L105.3,147.8L104.6,144.6M246.6,289.6L246.9,290.2L246.9,290.9L247.2,291.6L247.3,292.5L247.6,293.5L248.3,294.3L248.5,295.2L248.2,296.2L247.9,296.9M282.9,302L283.5,300.9L286.1,299.6L290.4,299.3L292.6,298.8L294.9,298.9L296.5,299.3L298.3,299.3L302.7,297.4L307.4,296L308,296.2L308.1,296.7L307.3,297.8L306.4,299.3L307,300.9L307.8,302M398.9,302L401.2,299.7L402,299.3M202.7,278.7L201.5,278.2L200.7,275.9L200.9,272.5L202.2,268L202.5,264.6L201.9,262.5L202.7,259.3L204.7,255.1L206.1,250.6L206.8,245.9L207.8,242.7L209.7,240.6L214.3,234.5L214.7,234L214.6,231L213.3,230.6L211.5,229.6L206.9,228.5L202.6,227.9L200.6,227L198.9,224.7L197.8,224.6L195.7,225.5L193.1,226L191.2,225.6L190,225.7L189.3,226.1L189,225.7L188.5,223.7L187.5,223.2L186,222.7L185,222.9L184.4,223.9L183.4,224.6L182.4,224.4L179.5,219.8L178.7,218.8L178.5,217.9L177.8,216.1L176,214.5L174.3,213.9L173.4,214.1M168.2,190.3L168,191.3L168.1,193.4L168.7,195.5L170.2,197.6L171.4,199.2L173,200.4L175.7,201.6L176.8,201.9L176.8,203.4L176.7,205.1L175.8,206L174.9,207.3L174.2,208.9L173.5,212L173.4,214.1L171.9,213.3L171,212.6L169.6,212.5L168.2,212.9L167.2,214.1L165.8,214.4L164.6,214.1L163.8,213.3L163.3,212.8L161.4,212.3L160.7,211.1L161.3,210.6L161.8,209.6L162.2,208.5L162.8,207.3L161,204.2L160.6,203.2L159.2,201.5L159.2,200.6L159.5,199.8L159.5,199.1L159.6,197.5L160.6,196L161.3,194.2L162.4,191.7L165,188.6L166.7,189.1L167.6,189.1L168.1,190.2L168.2,190.3L168.3,189.6L169.6,186.3L173.9,183.3L173.4,180.3L173.4,178.4L172.3,177.2L170.2,176.7L169.6,175.9L169.4,175L171,173.2L169.1,171.7L168.2,170.2L165.7,168.3L165.3,167.6M226.9,9.4L231.2,9.5L232.3,9.7L238.7,11.8L240.3,13.2L242.3,13.3L245.9,11.9L248.7,11.4L249.7,12.2L251.2,12.5L251.5,12.5M85.6,155L85.9,156.7L86.8,158.9L87.4,160.1L86.9,161.7L87.3,163L89,165.4L91,167.6L92.8,169L93.4,168.8L94.7,168.5L97.1,167L99,166.6L100.1,167.6L100.7,168.3L101.9,170.8L102.3,173.4L102.9,175.5L103.8,176.4L107.5,176.7L110.2,177.5L111,178.2L111.9,183L112.4,183.6L113.1,183.1L113.8,182.3L114.7,182.2L116.3,182.5L118.4,182.6L120.6,183.1L123.5,185.8L123.5,186.7L122.9,188.3L122.6,189.5L123.1,190L124,191.3L123.8,192.7L123,193.8L122.7,194.7L122.7,195.2L123,195.7L123.6,196L128,196.6L132.1,196L134.6,194.5L135,193L135.8,191.2L137.3,189.6L138.4,189.1L139.4,189.8L137.7,196.1L138.9,197.7L139,200.1L139.5,202.2L140.9,202.2L142.7,202.5L143.9,203.3L145.4,204.6L147.5,205.7L149,206.1L149.4,207.1L150.7,208.2L152.5,210.5L154.2,212L155,212L156.6,211.4L158.9,211L160.7,211.1M402,239.2L400.5,239.2L396.7,238.6L391.4,234.8L390,234.7L388.5,234.9L386.2,234L381.7,231.5L379.5,231L378.2,231.3L377,231.8L376.1,231.9L375.6,231.1L374,230.1L372.2,230L371.7,230.6L371.2,236.1L370.7,238L368.3,238L367.5,238.9L365.7,241.5L365.3,244L362.1,243.5L360.7,243.1L359.3,243.5L357.8,244.8L353.8,244.7L350.6,243.9L349.1,240.8L347.7,239.5L345.8,238.4L345.2,238.2","grat":"M27.6,302L27.6,-2M73.6,302L73.6,-2M119.5,302L119.5,-2M165.5,302L165.5,-2M211.5,302L211.5,-2M257.5,302L257.5,-2M303.4,302L303.4,-2M349.4,302L349.4,-2M395.4,302L395.4,-2M-2,298.8L27.6,298.8L85.1,298.8L142.5,298.8L200,298.8L257.5,298.8L314.9,298.8L372.4,298.8L402,298.8M-2,264.7L27.6,264.7L85.1,264.7L142.5,264.7L200,264.7L257.5,264.7L314.9,264.7L372.4,264.7L402,264.7M-2,230L27.6,230L85.1,230L142.5,230L200,230L257.5,230L314.9,230L372.4,230L402,230M-2,194.6L27.6,194.6L85.1,194.6L142.5,194.6L200,194.6L257.5,194.6L314.9,194.6L372.4,194.6L402,194.6M-2,158.5L27.6,158.5L85.1,158.5L142.5,158.5L200,158.5L257.5,158.5L314.9,158.5L372.4,158.5L402,158.5M-2,121.6L27.6,121.6L85.1,121.6L142.5,121.6L200,121.6L257.5,121.6L314.9,121.6L372.4,121.6L402,121.6M-2,83.8L27.6,83.8L85.1,83.8L142.5,83.8L200,83.8L257.5,83.8L314.9,83.8L372.4,83.8L402,83.8M-2,45.2L27.6,45.2L85.1,45.2L142.5,45.2L200,45.2L257.5,45.2L314.9,45.2L372.4,45.2L402,45.2M-2,5.6L27.6,5.6L85.1,5.6L142.5,5.6L200,5.6L257.5,5.6L314.9,5.6L372.4,5.6L402,5.6","cities":{"prague":[359.5,191.9],"amsterdam":[140.3,107.8],"bruges":[101.7,150.8]},"others":[["Paris",81.7,235.1],["London",24.7,139.9],["Brussels",127.6,164],["Berlin",335.7,102],["Cologne",187.6,160.8],["Frankfurt",227.2,190.7],["Dresden",343.4,156.7],["Haarlem",134.4,107]],"labels":[["NORTH SEA",87.4,72.3],["GERMANY",262.1,136.4],["FRANCE",110.3,223],["BELGIUM",133.3,178.5],["NETHERLANDS",165.5,85.7],["CZECHIA",356.3,219.5],["ENGLAND",41.4,104.7]],"gratLabels":[["0\u00b0E",27.6,291],["2\u00b0E",73.6,291],["4\u00b0E",119.5,291],["6\u00b0E",165.5,291],["8\u00b0E",211.5,291],["10\u00b0E",257.5,291],["12\u00b0E",303.4,291],["14\u00b0E",349.4,291],["16\u00b0E",395.4,291],["48\u00b0N",14,266.7],["49\u00b0N",14,232],["50\u00b0N",14,196.6],["51\u00b0N",14,160.5],["52\u00b0N",14,123.6],["53\u00b0N",14,85.8]]};
+
+
+/* ---------- HELPERS ---------- */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k,d){try{const v=localStorage.getItem("trip:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("trip:"+k,JSON.stringify(v))}catch(e){}}
+};
+const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const parse = iso => {const [y,m,d]=iso.split("-").map(Number);return {y,m,d,dt:new Date(y,m-1,d)}};
+const fmtDate = iso => {const p=parse(iso);return `${WD[p.dt.getDay()]}, ${MO[p.m-1]} ${p.d}`};
+const todayIso = () => {const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`};
+const mapsUrl = q => "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const startUtc = (iso,t) => {const p=parse(iso);const [h,mi]=t.split(":").map(Number);return Date.UTC(p.y,p.m-1,p.d,h-2,mi)}; /* CEST = UTC+2 */
+const z = ms => new Date(ms).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+function gcal(day,it){
+  const s=startUtc(day.date,it.t), e=s+(it.dur||60)*60000;
+  const det = (it.note||"")+"\nBooked reservation. Trip guide.";
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(it.title)+"&dates="+z(s)+"/"+z(e)+"&details="+encodeURIComponent(det)+(it.q?"&location="+encodeURIComponent(it.q):"");
+}
+function gcalCancel(){
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("Last day to cancel Prague reservations")+"&dates=20261009/20261010&details="+encodeURIComponent("Prague bookings can be cancelled until today.");
+}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2200)}
+
+/* ---------- STATE ---------- */
+const trip0 = DAYS[0].date, tripN = DAYS[DAYS.length-1].date;
+const T = todayIso();
+const inTrip = T>=trip0 && T<=tripN;
+const state = {
+  tab:"today",
+  dayIdx: inTrip ? Math.max(0,DAYS.findIndex(d=>d.date===T)) : 0,
+  city: "prague", filter:"all", learnCity:"prague", learnCat:"all", openFact:null,
+  mapOpen:false, sel:null, dayF:"all", vb:null,
+  area:null, installOpen:true
+};
+state.city = DAYS[state.dayIdx].city; state.learnCity = state.city;
+
+/* ---------- VIEWS ---------- */
+const ICONS={
+ today:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ trip:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+ map:'<svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+ learn:'<svg viewBox="0 0 24 24"><path d="M4 5.5C6 4.5 9 4.5 12 6c3-1.5 6-1.5 8-.5V19c-2-1-5-1-8 .5-3-1.5-6-1.5-8-.5z"/><path d="M12 6v13.5"/></svg>',
+ fun:'<svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>',
+ plans:'<svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 000-6H9a3 3 0 010-6h6.5"/></svg>'
+};
+const TABS=[["today","Today"],["trip","Trip"],["map","Map"],["learn","Fun Facts"],["fun","Checklist"]];
+function renderTabs(){
+  $("#tabs").innerHTML = TABS.map(([k,l])=>`<button role="tab" aria-selected="${state.tab===k}" data-tab="${k}">${ICONS[k]}<span>${l}</span></button>`).join("");
+}
+
+function itemHtml(day,it){
+  const time = it.t ? `<div class="time">${it.t}</div>` : `<div class="time none">Anytime</div>`;
+  const num = it.num ? `<span class="num">${it.num}</span>` : "";
+  const title = it.b ? `${num}<span class="hl">${it.title}</span><span class="tag book">Booked</span>` : `${num}${it.title}${it.top?'<span class="tag top">Don\'t miss</span>':""}${it.o?'<span class="tag opt">Idea</span>':''}`;
+  let acts="";
+  if(it.q||it.b){
+    acts = `<div class="acts">${it.q?`<a class="btn" target="_blank" rel="noopener" href="${mapsUrl(it.q)}">Open in Maps</a>`:""}${it.b&&it.t?`<a class="btn primary" target="_blank" rel="noopener" href="${gcal(day,it)}">Add to calendar</a>`:""}</div>`;
+  }
+  return `<div class="item">${time}<div><div class="ttl">${title}</div>${it.note?`<div class="note">${it.note}</div>`:""}${it.w?`<div class="warn">${it.w}</div>`:""}${acts}</div></div>`;
+}
+
+function nextBooking(){
+  const now=Date.now(); let best=null;
+  DAYS.forEach(d=>d.items.forEach(it=>{ if(it.b&&it.t){const s=startUtc(d.date,it.t); if(s>now&&(!best||s<best.s)) best={s,it,d}} }));
+  return best;
+}
+function untilStr(ms){
+  const m=Math.max(0,Math.floor(ms/60000)), d=Math.floor(m/1440), h=Math.floor((m%1440)/60), mi=m%60;
+  return d>0?`${d}d ${h}h`:h>0?`${h}h ${mi}m`:`${mi}m`;
+}
+
+function viewToday(){
+  const day=DAYS[state.dayIdx];
+  document.body.dataset.city=day.city;
+  const isA=day.city==="amsterdam"&&day.areas, items=isA?dayPts(day):day.items, hasPts=items.some(x=>x.num);
+  const sk=isA?`<div class="skicon" aria-hidden="true">${sketchSvg({hi:day.areas,mini:true,col:"#F2B33D"})}</div>`:"";
+  const where=isA?`<p class="where">${day.areas.length||day.trip?"Where: ":""}<b>${whereLine(day)}</b></p>`:"";
+  let hero;
+  if(inTrip){
+    const nb=nextBooking();
+    hero=`<div class="hero${sk?" withsk":""}">${sk}<p>${CITY[day.city].name}, ${fmtDate(day.date)}</p><h2>${day.title}</h2>${where}${nb?`<p>Next booking: ${nb.it.title} in ${untilStr(nb.s-Date.now())}</p>`:""}</div>`;
+  } else if(T<trip0){
+    const days=Math.ceil((parse(trip0).dt-parse(T).dt)/86400000);
+    hero=`<div class="hero${sk?" withsk":""}">${sk}<p>Trip starts Saturday, Oct 10</p><div class="big">${days} day${days===1?"":"s"} to go</div><p>Previewing ${fmtDate(day.date)}: ${day.title}</p>${where}</div>`;
+  } else {
+    hero=`<div class="hero${sk?" withsk":""}">${sk}<p>The trip is over</p><h2>What a trip</h2><p>Browsing ${fmtDate(day.date)}: ${day.title}</p></div>`;
+  }
+  const strip=`<div class="strip">${DAYS.map((d,i)=>{const p=parse(d.date);return `<button class="daychip${d.date===T?" today":""}" style="--c:${CITY[d.city].color}" aria-pressed="${i===state.dayIdx}" data-day="${i}"><small>${WD[p.dt.getDay()]}</small><b>${p.d}</b><small>${CITY[d.city].name.slice(0,3)}</small></button>`}).join("")}</div>`;
+  const facts=FACTS[day.city]; const f=facts[state.dayIdx%facts.length];
+  const alertCancel = (day.city==="prague" && T<=CANCEL_BY) ? `<div class="alert"><b>Prague cancellation deadline: Oct 9</b>Bookings can be cancelled until then. <a href="${gcalCancel()}" target="_blank" rel="noopener">Add a reminder</a></div>`:"";
+  const vote = day.open ? `<div class="card"><h3 style="font-size:18px">Where should we go?</h3>${voteHtml(day.open)}</div>`:"";
+  const mapBtn = (hasPts||(isA&&day.trip)) ? `<div class="acts" style="margin:0 0 12px"><button class="btn primary" data-dmap="${dayNum(day)}">See this day on the map</button></div>`:"";
+  const standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+  const nudge=(!standalone&&!store.get("installHide",false))?`<div class="alert nudge"><button class="x" data-nudgex aria-label="Dismiss">×</button><b>Put Classy European Vacation on your phone</b>Add it to your home screen so it opens like an app. <a href="#" data-tab="trip">Show me how</a></div>`:"";
+  return nudge+strip+hero+alertCancel+mapBtn+`<div class="card">${items.map(it=>itemHtml(day,it)).join("")}</div>`+vote+
+   `<div class="card"><div class="cat muted small">Did you know?</div><h3 style="font-size:18px;margin:2px 0 6px">${f[1]}</h3><div>${f[2]}</div></div>`;
+}
+
+function viewTrip(){
+  const nBooked=DAYS.reduce((a,d)=>a+d.items.filter(i=>i.b).length,0);
+  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent), android=/Android/.test(navigator.userAgent);
+  const standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+  const iosSteps=`<ol class="steps"><li>Open this link in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (the square with an arrow).</li><li>Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>`;
+  const andSteps=`<ol class="steps"><li>Open this link in <b>Chrome</b>.</li><li>Tap the <b>⋮</b> menu in the top corner.</li><li>Tap <b>Add to Home screen</b> or <b>Install app</b>.</li></ol>`;
+  let html=standalone?"":`<details class="card install" ${state.installOpen?"open":""}><summary><img src="apple-touch-icon.png" alt="" width="40" height="40">Put this app on your phone</summary>
+    <div class="note" style="color:var(--ink);margin-bottom:6px">It opens like an app from your home screen, with the compass icon and the name Classy European Vacation.</div>
+    ${ios?`<b>iPhone</b>${iosSteps}`:android?`<b>Android</b>${andSteps}`:`<b>iPhone</b>${iosSteps}<b>Android</b>${andSteps}`}
+    <div class="note small">Checkmarks and votes are saved on each phone. Use "Copy my picks" in the Checklist to send yours to the group chat.</div></details>`;
+  html+=`<details class="card" open><summary>To sort out</summary>
+   <div class="alert"><b>Oct 10 timing</b>Dinner at Na Pekle is 6pm and Marina is 7:30pm, and Marilyn and Wittie land between 6 and 7. Likely one of these needs to move.</div>
+   <div class="alert"><b>Prague cancellations by Oct 9</b>All Prague bookings can be cancelled until then.</div>
+   <div class="alert"><b>Open days</b>Amsterdam is planned. Oct 21 to 23 in Bruges have ideas but no plan yet. Vote in the Checklist tab.</div>
+   <div class="alert"><b>Ten Boom Museum, Oct 17</b>Sold out so far. Check back closer to the date.</div></details>`;
+  html+=`<div class="card"><h3 style="font-size:18px">${nBooked} reservations</h3><div class="note">Use Add to calendar on any booking.</div><div class="acts" style="margin-top:10px"><a class="btn" href="${gcalCancel()}" target="_blank" rel="noopener">Prague cancel reminder</a></div></div>`;
+  let cur="";
+  DAYS.forEach((d,i)=>{
+    if(d.city!==cur){cur=d.city;html+=`<div class="sect" style="color:${CITY[cur].color}">${CITY[cur].name}${cur==="prague"?" (Oct 10 to 13)":cur==="amsterdam"?" (Oct 14 to 20)":" (Oct 20 to 24)"}</div>`}
+    const bk=d.items.filter(x=>x.b);
+    const tsk=d.areas?`<div class="tripsk" aria-hidden="true">${sketchSvg({hi:d.areas,mini:true,col:"#1E6A8C"})}</div>`:"";
+    html+=`<button class="card tripcard" style="width:100%;text-align:left;border-left:6px solid ${CITY[d.city].color}" data-open="${i}">${tsk}<div class="muted small">${fmtDate(d.date)}</div><div class="ttl">${d.title}</div>${d.areas?`<div class="note" style="color:var(--ams);font-weight:600">${whereLine(d)}</div>`:""}${bk.length?`<div class="note">${bk.map(b=>`<span class="hl" style="background:var(--mark);padding:0 4px;border-radius:3px;color:var(--ink)">${b.t}</span> ${b.title}`).join("<br>")}</div>`:`<div class="note">${d.items.length} items</div>`}</button>`;
+  });
+  return html;
+}
+
+function viewMap(){
+  document.body.dataset.city=state.city;
+  if(MAPS[state.city]&&state.mapOpen) return viewCityMap();
+  const pos=EU.cities, [px,py]=pos.prague, [ax,ay]=pos.amsterdam, [bx,by]=pos.bruges;
+  const arc=(x1,y1,x2,y2,b)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy);return {d:`M${x1} ${y1} Q${(mx-dy/l*b).toFixed(1)} ${(my+dx/l*b).toFixed(1)} ${x2} ${y2}`,cx:mx-dy/l*b/2,cy:my+dx/l*b/2}};
+  const fly=arc(px,py,ax,ay,-38), rail=arc(ax,ay,bx,by,-10);
+  const rose=`<g transform="translate(44 250)" class="rose"><circle r="24" fill="none" stroke="#5A4630" stroke-width=".8"/><circle r="19" fill="none" stroke="#5A4630" stroke-width=".5"/>
+    <polygon points="0,-30 4,-4 0,0" fill="#8B2E1F"/><polygon points="0,-30 -4,-4 0,0" fill="#5A1E14"/><polygon points="0,30 4,4 0,0" fill="#C9B48A"/><polygon points="0,30 -4,4 0,0" fill="#5A4630"/>
+    <polygon points="30,0 4,4 0,0" fill="#C9B48A"/><polygon points="30,0 4,-4 0,0" fill="#5A4630"/><polygon points="-30,0 -4,4 0,0" fill="#5A4630"/><polygon points="-30,0 -4,-4 0,0" fill="#C9B48A"/>
+    <text y="-33" text-anchor="middle" class="eu-n">N</text></g>`;
+  const plane=`<g transform="translate(${fly.cx.toFixed(1)} ${fly.cy.toFixed(1)}) rotate(-112)"><path d="M0 -7 L1.4 -1.5 L7 1.5 L7 3 L1.4 1.6 L1 5.5 L2.8 7 L2.8 8 L0 7.2 L-2.8 8 L-2.8 7 L-1 5.5 L-1.4 1.6 L-7 3 L-7 1.5 L-1.4 -1.5 Z" fill="#3A2A1C"/></g>`;
+  const svg=`<svg viewBox="0 0 ${EU.W} ${EU.H}" role="img" aria-label="Map of the route: Prague, Amsterdam, Bruges">
+   <defs><pattern id="euhatch" width="6" height="4" patternUnits="userSpaceOnUse"><line x1="0" y1="2" x2="6" y2="2" stroke="#7FA0A8" stroke-width=".5" opacity=".55"/></pattern>
+    <clipPath id="euclip"><rect width="${EU.W}" height="${EU.H}"/></clipPath></defs>
+   <g clip-path="url(#euclip)">
+   <rect width="${EU.W}" height="${EU.H}" fill="#D9E3DA"/><rect width="${EU.W}" height="${EU.H}" fill="url(#euhatch)"/>
+   <path d="${EU.land}" fill="none" stroke="#9DB6B5" stroke-width="9" opacity=".35" stroke-linejoin="round"/>
+   <path d="${EU.land}" fill="none" stroke="#9DB6B5" stroke-width="4.5" opacity=".55" stroke-linejoin="round"/>
+   <path d="${EU.land}" fill="#EFE2C2" stroke="#5A4630" stroke-width=".9" stroke-linejoin="round"/>
+   <path d="${EU.grat}" fill="none" stroke="#5A4630" stroke-width=".35" opacity=".35"/>
+   <path d="${EU.borders}" fill="none" stroke="#8B5A3C" stroke-width=".9" stroke-dasharray="3 2" opacity=".85"/>
+   ${EU.labels.map(([t,x,y])=>`<text x="${x}" y="${y}" text-anchor="middle" class="${t==="NORTH SEA"?"eu-sea":"eu-c"}">${t==="NORTH SEA"?"North Sea":t}</text>`).join("")}
+   ${EU.others.filter(o=>o[0]!=="Haarlem").map(([t,x,y])=>`<circle cx="${x}" cy="${y}" r="1.8" fill="#5A4630"/><text x="${x+4}" y="${y+3}" class="eu-o">${t}</text>`).join("")}
+   ${EU.gratLabels.map(([t,x,y])=>`<text x="${x}" y="${y}" class="eu-g" text-anchor="middle">${t}</text>`).join("")}
+   <path d="${fly.d}" fill="none" stroke="#3A2A1C" stroke-width="1.6" stroke-dasharray="5 4" stroke-linecap="round"/>
+   <path d="${rail.d}" fill="none" stroke="#3A2A1C" stroke-width="2.2" stroke-dasharray="1 0"/><path d="${rail.d}" fill="none" stroke="#EFE2C2" stroke-width="1" stroke-dasharray="4 4"/>
+   ${plane}
+   <text x="${(fly.cx+6).toFixed(1)}" y="${(fly.cy-8).toFixed(1)}" class="eu-r">Oct 14, by air</text>
+   <text x="${(rail.cx+8).toFixed(1)}" y="${(rail.cy+10).toFixed(1)}" class="eu-r">Oct 20, by rail</text>
+   ${Object.entries(pos).map(([k,[x,y]])=>`<g class="pin" data-city="${k}" tabindex="0" role="button" aria-label="${CITY[k].name}">
+      <circle cx="${x}" cy="${y}" r="26" fill="transparent"/>
+      <circle cx="${x}" cy="${y}" r="${state.city===k?11:8}" fill="${CITY[k].color}" stroke="#F8F0DC" stroke-width="2.5"/>
+      <circle cx="${x}" cy="${y}" r="2.6" fill="#F8F0DC"/>
+      <text x="${x+(k==="prague"?-4:-13)}" y="${y+(k==="prague"?-16:5)}" text-anchor="${k==="prague"?"middle":"end"}" class="eu-city">${CITY[k].name}</text></g>`).join("")}
+   ${rose}
+   <g class="cart"><rect x="10" y="10" width="170" height="38" fill="#F8F0DC" stroke="#5A4630" stroke-width="1"/><rect x="13" y="13" width="164" height="32" fill="none" stroke="#5A4630" stroke-width=".5"/>
+    <text x="95" y="28" text-anchor="middle" class="eu-t">Classy European Vacation</text><text x="95" y="40" text-anchor="middle" class="eu-ts">October 10 to 24, 2026</text></g>
+   </g><rect x="1" y="1" width="${EU.W-2}" height="${EU.H-2}" fill="none" stroke="#5A4630" stroke-width="2"/><rect x="4" y="4" width="${EU.W-8}" height="${EU.H-8}" fill="none" stroke="#5A4630" stroke-width=".6"/>
+  </svg>`;
+  const chips=`<div class="strip"><button class="chip" aria-pressed="${state.filter==="all"}" data-filter="all">All</button>${Object.entries(CATS).map(([k,[l]])=>`<button class="chip" aria-pressed="${state.filter===k}" data-filter="${k}">${l}</button>`).join("")}</div>`;
+  const cityChips=`<div class="strip">${Object.keys(CITY).map(k=>`<button class="chip" aria-pressed="${state.city===k}" data-city="${k}">${CITY[k].name}</button>`).join("")}</div>`;
+  const list=PLACES[state.city].filter(p=>state.filter==="all"||p[1]===state.filter);
+  return `<div class="mapbox">${svg}</div>${cityChips}${chips}<div class="card">${list.length?list.map(p=>`<div class="place"><div><div class="n"><span class="dot" style="background:${CATS[p[1]][1]}"></span>${p[0]}</div>${p[2]?`<div class="note">${p[2]}</div>`:""}</div><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(p[3])}">Maps</a></div>`).join(""):`<div class="muted">Nothing here yet.</div>`}</div>
+   <div class="note small">Tap a city on the map to open its antique street map. Tap Maps on any place for real directions.</div>`;
+}
+
+function viewLearn(){
+  document.body.dataset.city=state.learnCity;
+  const hasNb=FACTS[state.learnCity].some(f=>f[3]);
+  const cats=["all"].concat(hasNb?["nb"]:[],["history","art","food","culture"]), lab={all:"All",nb:"From the notebook",history:"History",art:"Art",food:"Food and drink",culture:"Culture"};
+  if(state.learnCat==="nb"&&!hasNb) state.learnCat="all";
+  const cityChips=`<div class="strip">${Object.keys(CITY).map(k=>`<button class="chip" aria-pressed="${state.learnCity===k}" data-lcity="${k}">${CITY[k].name}</button>`).join("")}</div>`;
+  const catChips=`<div class="strip">${cats.map(c=>`<button class="chip" aria-pressed="${state.learnCat===c}" data-lcat="${c}">${lab[c]}</button>`).join("")}</div>`;
+  const ams=state.learnCity==="amsterdam", ar=ams&&state.area?AREAS[state.area]:null;
+  const list=FACTS[state.learnCity].map((f,i)=>({f,i})).filter(x=>(state.learnCat==="all"||(state.learnCat==="nb"?x.f[3]:x.f[0]===state.learnCat))&&(!ar||ar.tags.includes(x.f[4])));
+  const sk=ams?`<div class="card skcard"><div class="skbox">${sketchSvg({sel:state.area})}</div>${ar?`<div class="acts" style="margin-top:8px"><span class="muted small" style="align-self:center">Showing ${ar.full}</span><button class="chip" data-area="${state.area}">Show all areas</button></div>`:`<div class="note small" style="margin:6px 2px 0">Tap a neighborhood to see only its facts.</div>`}</div>`:"";
+  if(!list.length) return cityChips+sk+catChips+`<div class="card muted">No facts in this mix. Try All.</div>`;
+  return cityChips+sk+catChips+`<div class="card">${list.map(({f,i})=>{const key=state.learnCity+i;const op=state.openFact===key;return `<div class="fact c-${f[0]}"><button class="q" data-fact="${key}" aria-expanded="${op}"><span>${f[1]}</span><span aria-hidden="true">${op?"−":"+"}</span></button><div class="cat">${lab[f[0]]}${f[4]?` · ${f[4]}`:""}${f[3]?` <span class="tag nb">Notebook</span>`:""}</div>${op?`<p>${f[2]}</p>`:""}</div>`}).join("")}</div>`;
+}
+
+/* day trips that leave the city map (Haarlem): numbered list plus one-tap walking directions */
+function tripPanel(day){
+  const st=day.items.filter(x=>x.q), q=st.map(x=>x.q);
+  const dir=q.length>1?"https://www.google.com/maps/dir/?api=1&travelmode=walking&origin="+encodeURIComponent(day.trip+" railway station")+"&destination="+encodeURIComponent(q[q.length-1])+(q.length>1?"&waypoints="+encodeURIComponent(q.slice(0,-1).join("|")):""):"";
+  return `<div class="card" style="border-top:4px solid var(--ams)"><div class="muted small" style="font-weight:600">Oct ${dayNum(day)} · Day trip</div><h3 style="font-size:20px;margin:2px 0 6px">${day.title}</h3>
+    <div class="note" style="color:var(--ink)">${day.trip} is off the Amsterdam map, about 20 minutes by train from Centraal. Everything below is a short walk from Haarlem station and the Grote Markt.</div>
+    ${dir?`<div class="acts"><a class="btn primary" target="_blank" rel="noopener" href="${dir}">Walking route in Google Maps</a></div>`:""}</div>
+   <div class="card">${st.map((x,i)=>`<div class="place"><div><div class="n"><span class="num" style="${x.b?"background:#C8951C":""}">${i+1}</span>${x.title}</div>${x.t?`<div class="note">${x.t}${x.b?", booked":""}</div>`:x.w?`<div class="note">${x.w}</div>`:""}</div><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(x.q)}">Maps</a></div>`).join("")}</div>`;
+}
+function viewDayRoute(dn){
+  CM=MAPS.amsterdam;
+  const day=DAYS.find(d=>d.city==="amsterdam"&&dayNum(d)===dn);
+  const st=dayPts(day).filter(s=>s.num).map(s=>({s,pt:CM.pts.find(p=>p.id===s.pt)})).filter(o=>o.pt);
+  const xy=st.map(o=>XY(o.pt));
+  if(!state.vb){
+    const xs=xy.map(p=>p[0]), ys=xy.map(p=>p[1]);
+    const minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+    const w=Math.min(CM.maxW,Math.max(maxx-minx+120,(maxy-miny+150)*0.8,CM.img?380:260)), h=w*1.25;
+    state.vb={x:(minx+maxx)/2-w/2,y:(miny+maxy)/2-h/2-h*0.05,w,h};
+  }
+  const vb=state.vb, col="#1E6A8C";
+  const line=xy.length>1?`<polyline points="${xy.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" fill="none" stroke="${col}" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`:"";
+  const ho=CM.pts.find(p=>p.id==="hotel"), [hx,hy]=XY(ho);
+  const hotel=`<g><circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="8" fill="#2A1D10" stroke="#F3E7C6" stroke-width="2.5"/><text class="m-dl" x="${(hx+12).toFixed(1)}" y="${(hy+5).toFixed(1)}">Hotel</text></g>`;
+  let dots="";
+  st.forEach((o,i)=>{const [x,y]=xy[i], id="s"+o.s.num, sel=state.sel===id, X=x.toFixed(1), Y=y.toFixed(1), c=o.s.b?"#C8951C":col;
+    dots+=`<g class="mdot" data-dot="${id}" tabindex="0" role="button" aria-label="${o.s.num}. ${o.s.title}">
+      <circle cx="${X}" cy="${Y}" r="22" fill="transparent"/>${sel?`<circle cx="${X}" cy="${Y}" r="18" fill="none" stroke="${c}" stroke-width="3" opacity=".6"/>`:""}
+      <circle cx="${X}" cy="${Y}" r="12" fill="${c}" stroke="#F3E7C6" stroke-width="2.5"/>
+      <text x="${X}" y="${(y+4.6).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" style="font-family:var(--head)">${o.s.num}</text></g>`});
+  const svg=`<svg id="citymap" viewBox="${vb.x.toFixed(1)} ${vb.y.toFixed(1)} ${vb.w.toFixed(1)} ${vb.h.toFixed(1)}" role="img" aria-label="Route map for Oct ${dn}">${cityLayout()}${line}${hotel}${dots}</svg>`;
+  const sel=st.find(o=>"s"+o.s.num===state.sel);
+  const sheet=sel?`<div class="sheet"><button class="x" data-desel aria-label="Close">×</button><b>${sel.s.num}. ${sel.s.title}</b><div class="note">${sel.s.note||""}${sel.s.w?` (${sel.s.w}.)`:""}</div><div class="acts"><a class="btn primary" target="_blank" rel="noopener" href="${mapsUrl(sel.s.q||sel.pt.q)}">Open in Maps</a>${sel.s.b&&sel.s.t?`<a class="btn" target="_blank" rel="noopener" href="${gcal(day,sel.s)}">Add to calendar</a>`:""}</div></div>`:"";
+  const compass='<svg class="compass" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="none" stroke="#6B4F2C" stroke-width="1.5"/><polygon points="32,3 36,28 61,32 36,36 32,61 28,36 3,32 28,28" fill="#8A6A3A" stroke="#4A3520" stroke-width=".8"/><polygon points="32,3 36,28 28,28" fill="#A8432F" stroke="#4A3520" stroke-width=".8"/></svg>';
+  const list=`<div class="card">${st.map(o=>`<div class="place"><div><div class="n"><span class="num" style="${o.s.b?"background:#C8951C":""}">${o.s.num}</span>${o.s.title}</div>${o.s.w?`<div class="note">${o.s.w}</div>`:""}</div><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(o.s.q||o.pt.q)}">Maps</a></div>`).join("")}</div>`;
+  const off=day.trip?`<div class="note small" style="margin:0 2px 8px"><b>${day.trip}</b> is a day trip off this map. Only the Amsterdam stops are shown.</div>`:"";
+  return {svg,sheet,compass,list,off,title:`<b>Oct ${dn}</b><i>${day.title}</i>`};
+}
+
+function voteHtml(id){
+  const v=VOTES[id], mine=store.get("votes",{})[id];
+  return `<div class="muted small">${v.label}. Tap your pick.</div><div class="opts">${v.opts.map(o=>`<button class="opt" aria-pressed="${mine===o}" data-vote="${id}" data-val="${o}">${o}</button>`).join("")}</div>`;
+}
+
+function viewFun(){
+  const done=store.get("checks",{});
+  const cc=c=>(Object.values(CITY).find(x=>x.name===c)||{}).color||"var(--accent)";
+  const lists=CHECK.map(([c,items])=>`<div class="sect" style="color:${cc(c)}">${c}</div><div class="card" style="border-top-color:${cc(c)}">${items.map(it=>{const k=c+"|"+it;return `<label class="check${done[k]?" done":""}"><input type="checkbox" data-check="${k}" ${done[k]?"checked":""}><span>${it}</span></label>`}).join("")}</div>`).join("");
+  const votes=`<div class="sect">Open days: your picks</div>`+Object.keys(VOTES).map(id=>`<div class="card">${voteHtml(id)}</div>`).join("")+`<div class="acts" style="margin:0 0 12px"><button class="btn primary" id="copyVotes">Copy my picks to text</button></div><div class="note small">Picks are saved on this phone only. Copy and send them to the group chat.</div>`;
+  return `<h2 style="font-size:22px;margin:4px 0 0">Trip checklist</h2>`+lists+votes;
+}
+
+function render(){
+  renderTabs();
+  const v={today:viewToday,trip:viewTrip,map:viewMap,learn:viewLearn,fun:viewFun}[state.tab]();
+  $("#app").innerHTML=v;
+  if(state.tab==="trip"||state.tab==="fun") document.body.dataset.city=DAYS[state.dayIdx].city;
+}
+
+
+/* ---------- CITY MAP (hand-drawn vector, approximate) ---------- */
+let CM=null;
+const P=(lon,lat)=>[(lon-CM.o.lon0)*CM.o.kx,(CM.o.lat0-lat)*CM.o.ky];
+const LL=a=>a.map(([x,y])=>P(x,y));
+function smooth(pts){
+  const f=n=>n.toFixed(1);
+  let d=`M${f(pts[0][0])} ${f(pts[0][1])}`;
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
+    d+=` C${f(p1[0]+(p2[0]-p0[0])/6)} ${f(p1[1]+(p2[1]-p0[1])/6)} ${f(p2[0]-(p3[0]-p1[0])/6)} ${f(p2[1]-(p3[1]-p1[1])/6)} ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return d;
+}
+const AMS={
+ parks:[
+  [[4.8650,52.3600],[4.8780,52.3615],[4.8795,52.3590],[4.8795,52.3572],[4.8650,52.3568]],
+  [[4.8790,52.3580],[4.8835,52.3580],[4.8835,52.3560],[4.8790,52.3560]],
+  [[4.8925,52.3528],[4.8975,52.3542],[4.8978,52.3530],[4.8930,52.3518]]],
+ ij:[[4.80,52.3900],[4.845,52.3885],[4.870,52.3862],[4.883,52.3846],[4.895,52.3818],[4.9010,52.3814],[4.911,52.3803],[4.925,52.3790],[4.935,52.3770],[4.99,52.3740]],
+ water:[ /* id,width,pts */
+  ["amstel",12,[[4.9120,52.3500],[4.9090,52.3540],[4.9060,52.3580],[4.9025,52.3612],[4.9010,52.3635],[4.8985,52.3655],[4.8955,52.3668]]],
+  ["rokin",8,[[4.8945,52.3668],[4.8932,52.3700],[4.8928,52.3722],[4.8926,52.3731]]],
+  ["damrak",9,[[4.8926,52.3731],[4.8950,52.3748],[4.8975,52.3766],[4.8998,52.3786]]],
+  ["singel",5,[[4.8955,52.3792],[4.8925,52.3772],[4.8905,52.3752],[4.8890,52.3720],[4.8893,52.3695],[4.8915,52.3677],[4.8945,52.3668]]],
+  ["herengracht",6,[[4.8940,52.3805],[4.8908,52.3780],[4.8885,52.3752],[4.8868,52.3715],[4.8872,52.3688],[4.8908,52.3667],[4.8955,52.3657],[4.9005,52.3655]]],
+  ["keizersgracht",6,[[4.8920,52.3810],[4.8888,52.3785],[4.8862,52.3752],[4.8845,52.3710],[4.8850,52.3678],[4.8885,52.3655],[4.8945,52.3643],[4.9000,52.3640],[4.9025,52.3640]]],
+  ["prinsengracht",6,[[4.8898,52.3818],[4.8862,52.3790],[4.8840,52.3752],[4.8822,52.3705],[4.8825,52.3665],[4.8865,52.3640],[4.8930,52.3628],[4.8990,52.3622],[4.9028,52.3620]]],
+  ["brouwers",5,[[4.8840,52.3828],[4.8898,52.3818],[4.8950,52.3800]]],
+  ["entrepot",6,[[4.9080,52.3690],[4.9140,52.3684],[4.9200,52.3681],[4.9250,52.3686]]],
+  ["muider",6,[[4.9035,52.3625],[4.9100,52.3640],[4.9180,52.3650],[4.9260,52.3658],[4.9310,52.3664]]],
+  ["nieuwevaart",8,[[4.9120,52.3732],[4.9200,52.3717],[4.9270,52.3702],[4.9340,52.3690]]],
+  ["singelgracht",8,[[4.8745,52.3730],[4.8745,52.3690],[4.8775,52.3655],[4.8800,52.3625],[4.8845,52.3600],[4.8905,52.3593],[4.8965,52.3592],[4.9020,52.3605]]]],
+ streets:[ /* id,width,pts (west to east for labels) */
+  ["leidsestraat",3.4,[[4.8830,52.3646],[4.8870,52.3657],[4.8910,52.3668]]],
+  ["kalverstraat",3.4,[[4.8915,52.3728],[4.8920,52.3705],[4.8930,52.3685],[4.8938,52.3672]]],
+  ["vijzelstraat",4,[[4.8940,52.3664],[4.8933,52.3635],[4.8925,52.3600]]],
+  ["utrechtsestraat",3.4,[[4.8960,52.3660],[4.8978,52.3635],[4.8995,52.3610]]],
+  ["raadhuisstraat",3.2,[[4.8845,52.3740],[4.8880,52.3737],[4.8910,52.3734]]],
+  ["rozengracht",4,[[4.8745,52.3730],[4.8790,52.3735],[4.8835,52.3738]]],
+  ["ferdinand",4,[[4.8872,52.3592],[4.8890,52.3550],[4.8925,52.3490]]],
+  ["albertcuyp",4,[[4.8895,52.3563],[4.8945,52.3555],[4.8985,52.3550]]],
+  ["ceintuur",4,[[4.8740,52.3548],[4.8830,52.3543],[4.8960,52.3538],[4.9065,52.3555]]]],
+ slabels:[ /* id,text,startOffset% */
+  ["leidsestraat","Leidsestraat",8],["albertcuyp","Albert Cuypstraat",5],["raadhuisstraat","Raadhuisstraat",0],["rozengracht","Rozengracht",5],["ferdinand","Ferdinand Bolstraat",0],["vijzelstraat","Vijzelstraat",0],["utrechtsestraat","Utrechtsestraat",0],["kalverstraat","Kalverstraat",0]],
+ wlabels:[ /* separate label paths along south parts */
+  ["Prinsengracht",[[4.8830,52.3665],[4.8865,52.3640],[4.8930,52.3628],[4.8990,52.3622],[4.9028,52.3620]],18],
+  ["Keizersgracht",[[4.8885,52.3655],[4.8945,52.3643],[4.9000,52.3640],[4.9025,52.3640]],8],
+  ["Herengracht",[[4.8908,52.3667],[4.8955,52.3657],[4.9005,52.3655]],12],
+  ["Stadhouderskade",[[4.8845,52.3600],[4.8905,52.3593],[4.8965,52.3592],[4.9020,52.3605]],12],
+  ["Singel",[[4.8893,52.3695],[4.8915,52.3677],[4.8945,52.3668]],0]],
+ hoods:[["JORDAAN",4.8775,52.3725],["OLD CENTRE",4.9000,52.3712],["DE PIJP",4.8960,52.3522],["PLANTAGE",4.9068,52.3655],["EASTERN ISLANDS",4.9200,52.3748]]
+};
+const PTS=[
+ {id:"hotel",n:"Sir Albert Hotel",lon:4.8908,lat:52.3558,cat:"stay",days:"all",note:"Kathy and Lauren's hotel. Wittie and Marilyn are at their own hotel (add the name).",q:"Sir Albert Hotel Amsterdam",lab:[12,-8,"start"]},
+ {id:"cannibale",n:"Cannibale Royale",lon:4.8878,lat:52.3542,cat:"book",days:[14],note:"Dinner Oct 14, 6:00pm. Ruysdaelkade 149.",q:"Cannibale Royale Amsterdam",cal:{date:"2026-10-14",t:"18:00",title:"Dinner: Cannibale Royale",dur:120},lab:[-13,5,"end"]},
+ {id:"alpes",approx:1,n:"Bistrot des Alpes",lon:4.8866,lat:52.3549,cat:"book",days:[16],note:"Fondue dinner Oct 16, 6:00pm. Hobbemakade 64.",q:"Bistrot des Alpes Hobbemakade 64 Amsterdam",cal:{date:"2026-10-16",t:"18:00",title:"Fondue dinner: Bistrot des Alpes",dur:120},lab:[-13,-6,"end"]},
+ {id:"centraal",n:"Amsterdam Centraal",lon:4.9003,lat:52.3791,cat:"transit",days:[15,17,18,19],note:"Trains to Haarlem (20 min), Zaanse Schans, Utrecht and Delft leave from here.",q:"Amsterdam Centraal Station",lab:[-13,5,"end"]},
+ {id:"dam",n:"Dam Square",lon:4.8926,lat:52.3731,cat:"landmark",days:"all",note:"The center of the old city. Good for getting your bearings.",q:"Dam Square Amsterdam",lab:[-12,5,"end"]},
+ {id:"vangogh",n:"Van Gogh Museum",lon:4.8811,lat:52.3584,cat:"sight",days:[18],note:"Oct 18 museum idea. Booking ahead is wise.",q:"Van Gogh Museum Amsterdam",lab:[13,-7,"start"]},
+ {id:"stedelijk",n:"Stedelijk Museum",lon:4.8797,lat:52.3580,cat:"sight",days:[18],note:"Museum of Modern Art, next to the Van Gogh Museum.",q:"Stedelijk Museum Amsterdam",lab:[12,20,"start"]},
+ {id:"rembrandt",n:"Rembrandt House",lon:4.9014,lat:52.3695,cat:"sight",days:[15],note:"Rembrandt's home and studio from 1639.",q:"Rembrandt House Museum Amsterdam",lab:[-13,5,"end"]},
+ {id:"attic",n:"Our Lord in the Attic",lon:4.9005,lat:52.3745,cat:"sight",days:[15],note:"A hidden 17th-century church inside a canal house.",q:"Our Lord in the Attic Amsterdam",lab:[-13,5,"end"]},
+ {id:"cheese",approx:1,n:"Cheese Museum",lon:4.8848,lat:52.3764,cat:"sight",days:[],note:"Position is approximate. Not in the plan, but handy if you pass by.",q:"Amsterdam Cheese Museum",lab:[13,5,"start"]},
+ {id:"papeneiland",n:"Cafe 't Papeneiland",lon:4.8898,lat:52.3818,cat:"food",days:[16],note:"Apple pie on the corner of Prinsengracht and Brouwersgracht.",q:"Cafe 't Papeneiland Amsterdam",lab:[13,5,"start"]},
+ {id:"backstage",approx:1,n:"Backstage Bar",lon:4.8835,lat:52.3636,cat:"bar",days:[18],note:"Karaoke encore from your plan. Position is approximate (near Leidseplein). Worth double-checking the address and karaoke nights.",q:"Backstage Bar Amsterdam Leidseplein",lab:[13,5,"start"]},
+ {id:"waterloo",n:"Waterlooplein market",lon:4.9027,lat:52.3677,cat:"hunt",days:[],note:"Flea market for Lauren's magnet, watch and antique hunt, next to the Rembrandt House (Oct 15). Closed Sundays.",q:"Waterlooplein Flea Market Amsterdam",lab:[13,5,"start"]},
+ {id:"cuyp",n:"Albert Cuyp Market",lon:4.8945,lat:52.3552,cat:"hunt",days:[14],note:"Street market in De Pijp, steps from the hotel. Closed Sundays.",q:"Albert Cuyp Market Amsterdam",lab:[12,22,"start"]}
+];
+/* extra points used only by the Plans tab (x:1 = hidden on the regular map) */
+[["nicolaas","Sint Nicolaaskerk",4.9011,52.3766],["oudekerk","Oude Kerk",4.8980,52.3742],["waag","The Waag",4.9003,52.3727],
+ ["trippen","Trippenhuis",4.8995,52.3717],["oostindisch","Oostindisch Huis",4.8988,52.3709],["oudeman","Oudemanhuispoort",4.8946,52.3693],
+ ["begijnhof","Begijnhof",4.8899,52.3693],["torensluis","Torensluis",4.8893,52.3755],["bartolotti","Bartolotti House",4.8878,52.3757],
+ ["westerkerk","Westerkerk",4.8836,52.3744],["annefrank","Anne Frank House",4.8841,52.3754],["bloem","Bloemgracht 87 to 91",4.8812,52.3758],
+ ["smalle","Cafe 't Smalle",4.8858,52.3771],["andries","Sint Andrieshofje",4.8830,52.3778],["westerstraat","Westerstraat",4.8822,52.3790],
+ ["westeiland","Western Islands",4.8890,52.3858],["felix","Felix Meritis",4.8846,52.3713],["looier","Looier Antiekcentrum",4.8806,52.3686],
+ ["american","Leidseplein",4.8823,52.3642],["krijtberg","De Krijtberg",4.8903,52.3681],["katten","Kattenkabinet",4.8930,52.3653],
+ ["rijks","Rijksmuseum",4.8852,52.3600],["coster","Coster Diamonds",4.8835,52.3592],["vondelpark","Vondelpark",4.8730,52.3588],
+ ["concert","Concertgebouw",4.8791,52.3563],["magere","Magere Brug",4.9025,52.3634],["amstelsluizen","Amstelsluizen",4.9040,52.3605],
+ ["willet","Willet-Holthuysen",4.9001,52.3654],["blauwbrug","Blauwbrug",4.9008,52.3665],["rembrandtplein","Rembrandtplein",4.8965,52.3662],
+ ["hortus","Hortus Botanicus",4.9081,52.3667],["artis","Artis Zoo",4.9166,52.3660],["scheepvaart","Scheepvaart Museum",4.9153,52.3716],
+ ["kromhout","Werf 't Kromhout",4.9233,52.3707],["gooyer","De Gooyer windmill",4.9265,52.3667]
+].forEach(([id,n,lon,lat])=>PTS.push({id,n,lon,lat,x:1,cat:"sight",days:[],note:"",q:n+" Amsterdam",lab:[12,5,"start"]}));
+const DOTCOL={book:"#D2A12C",sight:"#3C6E86",food:"#A8432F",bar:"#6B4A86",hunt:"#4C7A3F",stay:"#2A1D10",transit:"#6B6150",landmark:"#8A7350"};
+const DOTLAB={book:"Booked",sight:"Sights",food:"Food",bar:"Bars",hunt:"Lauren's hunts",stay:"Hotel",transit:"Train station"};
+
+const MAPS={};
+MAPS.amsterdam={name:"Amsterdam",o:{lon0:4.865,lat0:52.388,kx:11500,ky:18836},vb:{x:45,y:15,w:500,h:625},maxW:800,
+ parks:AMS.parks,big:{pts:AMS.ij,label:["het IJ",4.9150,52.3830]},water:AMS.water,streets:AMS.streets,slabels:AMS.slabels,wlabels:AMS.wlabels,hoods:AMS.hoods,pts:PTS,
+ days:[14,15,16,17,18,19],off:"Tap a day to see its route. Off the map: Haarlem, Zaanse Schans and Delft."};
+
+/* ----- PRAGUE ----- */
+MAPS.prague={name:"Prague",o:{lon0:14.350,lat0:50.102,kx:20600,ky:32120},vb:{x:1090,y:150,w:560,h:700},maxW:2400,
+ parks:[
+  [[14.3920,50.0860],[14.4010,50.0835],[14.4060,50.0800],[14.4050,50.0770],[14.3960,50.0775],[14.3900,50.0810]],
+  [[14.4170,50.0975],[14.4260,50.0985],[14.4300,50.0950],[14.4220,50.0940]],
+  [[14.4150,50.0650],[14.4215,50.0640],[14.4220,50.0620],[14.4155,50.0625]],
+  [[14.4085,50.0865],[14.4100,50.0845],[14.4098,50.0825],[14.4082,50.0830],[14.4075,50.0850]]],
+ blocks:[
+  [[14.3965,50.0912],[14.4020,50.0925],[14.4070,50.0912],[14.4040,50.0898],[14.3985,50.0900]],
+  [[14.3865,50.0868],[14.3900,50.0870],[14.3902,50.0855],[14.3868,50.0853]]],
+ plazas:[[[14.4205,50.0878],[14.4225,50.0880],[14.4228,50.0870],[14.4208,50.0866]]],
+ water:[["vltava",60,[[14.4215,50.0580],[14.4190,50.0625],[14.4155,50.0675],[14.4130,50.0725],[14.4122,50.0775],[14.4112,50.0822],[14.4108,50.0850],[14.4112,50.0872],[14.4130,50.0895],[14.4160,50.0925],[14.4225,50.0955],[14.4325,50.0985],[14.4450,50.1015]]]],
+ bridges:[["charles",10,[[14.4095,50.0878],[14.4112,50.0869],[14.4130,50.0862]]],["legii",7,[[14.4088,50.0833],[14.4115,50.0829],[14.4140,50.0824]]],["manes",7,[[14.4098,50.0890],[14.4122,50.0889],[14.4145,50.0894]]],["cechuv",7,[[14.4120,50.0918],[14.4150,50.0928],[14.4180,50.0932]]]],
+ streets:[
+  ["karlova",5,[[14.4130,50.0862],[14.4165,50.0868],[14.4195,50.0872],[14.4207,50.0872]]],
+  ["celetna",5,[[14.4228,50.0875],[14.4255,50.0880],[14.4283,50.0875]]],
+  ["parizska",5.5,[[14.4160,50.0925],[14.4190,50.0905],[14.4215,50.0882]]],
+  ["narodni",6,[[14.4140,50.0815],[14.4200,50.0825],[14.4250,50.0835]]],
+  ["wenceslas",14,[[14.4252,50.0838],[14.4300,50.0812]]],
+  ["naprikope",6,[[14.4252,50.0838],[14.4280,50.0858],[14.4300,50.0880]]],
+  ["nerudova",4.5,[[14.4015,50.0900],[14.4030,50.0890],[14.4040,50.0883]]],
+  ["belohorska",3.6,[[14.3560,50.0850],[14.3690,50.0855],[14.3800,50.0865],[14.3880,50.0868]]],
+  ["seifertova",3.6,[[14.4360,50.0830],[14.4400,50.0840],[14.4455,50.0858]]],
+  ["krizikova",3.6,[[14.4400,50.0925],[14.4450,50.0930],[14.4510,50.0935]]]],
+ slabels:[["karlova","Karlova",15],["celetna","Celetna",10],["parizska","Parizska",0],["narodni","Narodni",15],["wenceslas","Wenceslas Sq.",0],["naprikope","Na Prikope",0],["belohorska","Belohorska",30],["seifertova","Seifertova",10],["krizikova","Krizikova",10]],
+ wlabels:[["Vltava",[[14.4160,50.0925],[14.4225,50.0955],[14.4325,50.0985]],12,4]],
+ hoods:[["STARE MESTO",14.4235,50.0912],["MALA STRANA",14.4030,50.0852],["PRAGUE CASTLE",14.4020,50.0937],["NOVE MESTO",14.4250,50.0792],["PETRIN",14.3985,50.0805],["VYSEHRAD",14.4185,50.0605],["LETNA",14.4225,50.0968],["ZIZKOV",14.4450,50.0805],["KARLIN",14.4475,50.0965],["BREVNOV",14.3640,50.0885],["STRAHOV",14.3890,50.0885]],
+ pts:[
+  {id:"nap",n:"Na Pekle (Strahov)",lon:14.3888,lat:50.0860,cat:"book",days:[10],note:"Dinner Oct 10, 6:00pm. Underground wine cellar brewery, est. 1499.",q:"Na Pekle Strahov Prague",cal:{date:"2026-10-10",t:"18:00",title:"Dinner: Na Pekle",dur:120},lab:[13,-6,"start"]},
+  {id:"marina",n:"Marina Ristorante",lon:14.4137,lat:50.0893,cat:"book",days:[10],note:"Dinner Oct 10, 7:30pm. Italian restaurant on a river boat across from the Rudolfinum. One review mentions cash only, so check.",q:"Marina Ristorante Prague",cal:{date:"2026-10-10",t:"19:30",title:"Dinner: Marina Restaurant",dur:120},lab:[-13,5,"end"]},
+  {id:"pinkasu",n:"U Pinkasu",lon:14.4247,lat:50.0826,cat:"bar",days:[10],note:"First pub to serve Pilsner, est. 1843. Drinks idea for Oct 10.",q:"U Pinkasu Prague",lab:[12,5,"start"]},
+  {id:"dungeon",approx:1,n:"Dungeon tour",lon:14.4190,lat:50.0861,cat:"book",days:[11],note:"Tour Oct 11, 1:00pm, about 1.5 hours. Start point isn't in the plan, so check your confirmation. Arrive 5 to 10 min early.",q:"Old Town Prague",cal:{date:"2026-10-11",t:"13:00",title:"Medieval underground and dungeon tour",dur:90},lab:[-13,17,"end"]},
+  {id:"clock",n:"Astronomical Clock",lon:14.4208,lat:50.0870,cat:"sight",days:[11],note:"Show plays on the hour in Old Town Square.",q:"Prague Astronomical Clock",lab:[12,-7,"start"]},
+  {id:"benedict",n:"Pivovarsky Klub Benedict",lon:14.4495,lat:50.0928,cat:"food",days:[11],note:"Drink and lunch idea Oct 11 at 2:45. It's in Karlin, a tram or metro ride from Old Town.",q:"Pivovarsky Klub Benedict Prague",lab:[-13,5,"end"]},
+  {id:"pavouka",n:"Krcma U Pavouka",lon:14.4242,lat:50.0881,cat:"book",days:[11],note:"Medieval dinner and show Oct 11, 7:45pm. Celetna 595/17. Unlimited drinks.",q:"Krcma U Pavouka Prague",cal:{date:"2026-10-11",t:"19:45",title:"Medieval dinner and show: Krcma U Pavouka",dur:150},lab:[12,16,"start"]},
+  {id:"rudolfinum",n:"Rudolfinum",lon:14.4152,lat:50.0900,cat:"sight",days:[11],note:"Czech Philharmonic Oct 11 at 5:30pm, tickets about $30 to $55. Tight before the 7:45 dinner.",q:"Rudolfinum Prague",lab:[-12,6,"end"]},
+  {id:"upm",n:"Decorative Arts Museum",lon:14.4167,lat:50.0906,cat:"sight",days:[12],note:"Museum of Decorative Arts and Crafts, Oct 12 idea.",q:"Museum of Decorative Arts Prague",lab:[-4,-14,"end"]},
+  {id:"jewish",n:"Jewish Quarter",lon:14.4183,lat:50.0903,cat:"sight",days:[11],note:"Jewish Museum and the Old New Synagogue, Oct 11 idea.",q:"Jewish Museum Prague",lab:[12,-9,"start"]},
+  {id:"brevnov",n:"Brevnov Monastery Brewery",lon:14.3568,lat:50.0853,cat:"book",days:[12],note:"Brewery tour Oct 12, 3:00pm. Founded 993. Bring cash. Walk the grounds first.",q:"Brevnov Monastery Brewery Prague",cal:{date:"2026-10-12",t:"15:00",title:"Brewery tour: Brevnov Monastery",dur:90},lab:[13,-8,"start"]},
+  {id:"senk",n:"Klasterni Senk",lon:14.3590,lat:50.0846,cat:"book",days:[12],note:"Dinner Oct 12, 5:30pm at the Monastery restaurant.",q:"Klasterni Senk Prague",cal:{date:"2026-10-12",t:"17:30",title:"Dinner: Klasterni Senk",dur:120},lab:[13,16,"start"]},
+  {id:"lokal",n:"Lokal Dlouhaaa",lon:14.4262,lat:50.0897,cat:"food",days:[12],note:"Lunch idea Oct 12. Beer from 12 tanks.",q:"Lokal Dlouha Prague",lab:[12,5,"start"]},
+  {id:"triruzi",approx:1,n:"U Tri Ruzi",lon:14.4190,lat:50.0850,cat:"food",days:[12],note:"Burgers at Three Roses, Oct 12 lunch idea.",q:"U Tri Ruzi Prague",lab:[12,-3,"start"]},
+  {id:"vitus",n:"St. Vitus Cathedral",lon:14.4005,lat:50.0909,cat:"sight",days:[12,13],note:"Inside Prague Castle.",q:"St Vitus Cathedral Prague",lab:[-12,-6,"end"]},
+  {id:"golden",n:"Golden Lane",lon:14.4045,lat:50.0908,cat:"sight",days:[13],note:"Fairy-tale alley inside the castle complex.",q:"Golden Lane Prague",lab:[12,14,"start"]},
+  {id:"bridge",n:"Charles Bridge",lon:14.4112,lat:50.0869,cat:"sight",days:[13],note:"Walk it, then take the Royal Way.",q:"Charles Bridge Prague",lab:[-12,-9,"end"]},
+  {id:"vejvodu",n:"U Vejvodu",lon:14.4183,lat:50.0838,cat:"food",days:[13],note:"Lunch Oct 13. Historic beer hall with live accordion nightly.",q:"U Vejvodu Prague",lab:[-12,6,"end"]},
+  {id:"hrocha",n:"U Hrocha",lon:14.4066,lat:50.0900,cat:"bar",days:[13],note:"Tiny pub under the castle. Drinks Oct 13.",q:"U Hrocha Prague",lab:[-12,16,"end"]},
+  {id:"fleku",n:"U Fleku",lon:14.4177,lat:50.0795,cat:"book",days:[13],note:"Dinner Oct 13, 6:00pm. Brewing since 1499.",q:"U Fleku Prague",cal:{date:"2026-10-13",t:"18:00",title:"Dinner: U Fleku",dur:120},lab:[13,5,"start"]},
+  {id:"tiki",approx:1,n:"Tiki Taky Bar",lon:14.4425,lat:50.0850,cat:"book",days:[13],note:"Oct 13, 8:30pm. Seifertova 787/20, Zizkov.",q:"Tiki Taky Bar Prague",cal:{date:"2026-10-13",t:"20:30",title:"Tiki Taky Bar",dur:90},lab:[-13,5,"end"]},
+  {id:"kozicka",n:"Kozicka Bar",lon:14.4222,lat:50.0897,cat:"bar",days:[13],note:"Cellar bar in Old Town. Nightcap idea Oct 13.",q:"Kozicka Bar Prague",lab:[-12,-8,"end"]},
+  {id:"petrin",n:"Petrin Tower",lon:14.3955,lat:50.0834,cat:"sight",days:"all",note:"Starry night idea. Views over the whole city.",q:"Petrin Tower Prague",lab:[12,5,"start"]},
+  {id:"dancing",n:"Dancing House",lon:14.4140,lat:50.0755,cat:"bar",days:"all",note:"Glass Bar on top for a drink with a view. Reservations can be made.",q:"Dancing House Prague",lab:[13,5,"start"]}],
+ days:[10,11,12,13],off:"Hotel isn't on the map yet because the name isn't in the plan. Brevnov and Strahov are to the west, Zizkov and Karlin to the east, so pan around."};
+
+/* ----- BRUGES ----- */
+MAPS.bruges={name:"Bruges",o:{lon0:3.2100,lat0:51.2180,kx:31200,ky:49790},vb:{x:180,y:90,w:540,h:675},maxW:1300,
+ parks:[
+  [[3.2200,51.2025],[3.2230,51.2028],[3.2232,51.2010],[3.2205,51.2008]],
+  [[3.2185,51.2005],[3.2210,51.2010],[3.2212,51.1993],[3.2190,51.1990]]],
+ lakes:[[[3.2212,51.1995],[3.2237,51.1998],[3.2248,51.2012],[3.2232,51.2024],[3.2212,51.2012]]],
+ plazas:[
+  [[3.2237,51.2096],[3.2252,51.2097],[3.2255,51.2086],[3.2240,51.2085]],
+  [[3.2260,51.2092],[3.2275,51.2092],[3.2276,51.2084],[3.2262,51.2084]],
+  [[3.2195,51.2068],[3.2215,51.2070],[3.2218,51.2055],[3.2198,51.2053]]],
+ water:[
+  ["ring",16,[[3.2220,51.1985],[3.2195,51.2000],[3.2150,51.2030],[3.2127,51.2062],[3.2130,51.2100],[3.2150,51.2135],[3.2200,51.2155],[3.2262,51.2162],[3.2330,51.2160],[3.2385,51.2150],[3.2402,51.2110],[3.2388,51.2065],[3.2352,51.2030],[3.2300,51.2005],[3.2250,51.1990],[3.2220,51.1985],[3.2195,51.2000]]],
+  ["dijver",10,[[3.2243,51.2075],[3.2250,51.2062],[3.2262,51.2048],[3.2262,51.2030],[3.2250,51.2015],[3.2240,51.2003]]],
+  ["langerei",9,[[3.2243,51.2075],[3.2225,51.2085],[3.2205,51.2093],[3.2185,51.2105],[3.2160,51.2128],[3.2150,51.2135]]],
+  ["spiegelrei",9,[[3.2272,51.2103],[3.2283,51.2118],[3.2300,51.2135],[3.2320,51.2150],[3.2335,51.2160]]]],
+ streets:[
+  ["steenstraat",7,[[3.2205,51.2060],[3.2220,51.2072],[3.2240,51.2090]]],
+  ["breidel",6,[[3.2248,51.2091],[3.2262,51.2090]]],
+  ["hoogstraat",7,[[3.2275,51.2088],[3.2305,51.2095],[3.2335,51.2105]]],
+  ["langestraat",7,[[3.2290,51.2108],[3.2335,51.2125],[3.2375,51.2142]]],
+  ["mariastraat",6,[[3.2220,51.2043],[3.2240,51.2050],[3.2255,51.2055]]],
+  ["wollestraat",6,[[3.2245,51.2085],[3.2249,51.2068]]],
+  ["katelijne",6,[[3.2215,51.2010],[3.2230,51.2030],[3.2240,51.2045]]],
+  ["zuidzand",6,[[3.2208,51.2060],[3.2225,51.2080],[3.2236,51.2090]]],
+  ["station",7,[[3.2175,51.1976],[3.2195,51.2005],[3.2205,51.2056]]]],
+ slabels:[["steenstraat","Steenstraat",5],["hoogstraat","Hoogstraat",5],["langestraat","Langestraat",15],["mariastraat","Mariastraat",0]],
+ wlabels:[["Dijver",[[3.2262,51.2048],[3.2262,51.2030],[3.2250,51.2015]],0,-6],["Spiegelrei",[[3.2283,51.2118],[3.2300,51.2135],[3.2320,51.2150]],0,-6],["Minnewater",[[3.2208,51.2003],[3.2230,51.2006],[3.2262,51.2003]],0,-12]],
+ hoods:[["BURG",3.2277,51.2077],["'T ZAND",3.2208,51.2044],["BEGIJNHOF",3.2218,51.2033],["SINT-ANNA",3.2318,51.2122],["SINT-GILLIS",3.2170,51.2113]],
+ pts:[
+  {id:"hotel",approx:1,n:"Hotel Martins Relais",lon:3.2305,lat:51.2128,cat:"stay",days:"all",note:"Check in Oct 20. Position approximate.",q:"Hotel Martins Relais Bruges",lab:[13,5,"start"]},
+  {id:"cambrinus",approx:1,n:"Brasserie Cambrinus",lon:3.2252,lat:51.2100,cat:"book",days:[20],note:"Dinner Oct 20, 6:30pm. Traditional Belgian food, 400+ beers.",q:"Brasserie Cambrinus Bruges",cal:{date:"2026-10-20",t:"18:30",title:"Dinner: Brasserie Cambrinus",dur:120},lab:[-13,-4,"end"]},
+  {id:"vlissinghe",approx:1,n:"Cafe Vlissinghe",lon:3.2283,lat:51.2122,cat:"food",days:[20],note:"Est. 1515, the oldest tavern in Bruges. A first-night idea if you want something casual.",q:"Cafe Vlissinghe Bruges",lab:[-12,-6,"end"]},
+  {id:"markt",n:"Market Square",lon:3.2246,lat:51.2093,cat:"landmark",days:"all",note:"Pretty, but skip eating here. Overpriced.",q:"Markt Bruges",lab:[-8,-9,"end"]},
+  {id:"belfry",n:"Belfry",lon:3.2245,lat:51.2085,cat:"sight",days:[21],note:"Climb the tower, 366 steps.",q:"Belfry of Bruges",lab:[-13,8,"end"]},
+  {id:"basilica",n:"Basilica of Holy Blood",lon:3.2270,lat:51.2087,cat:"sight",days:[21],note:"In Burg Square. Small fee for the museum.",q:"Basilica of the Holy Blood Bruges",lab:[13,12,"start"]},
+  {id:"chezalbert",approx:1,n:"Chez Albert (waffles)",lon:3.2256,lat:51.2090,cat:"food",days:[21],note:"Waffle idea. I couldn't confirm the exact address, so check Maps.",q:"Chez Albert Bruges",lab:[13,-8,"start"]},
+  {id:"sintjan",n:"Sint-Jan Hospital",lon:3.2232,lat:51.2050,cat:"sight",days:[21],note:"Free harp concert 3 times a day, Tue to Sat, 40 min.",q:"Sint-Janshospitaal Bruges",lab:[-12,6,"end"]},
+  {id:"ladyc",n:"Church of Our Lady",lon:3.2244,lat:51.2057,cat:"sight",days:[23],note:"Michelangelo's Madonna and Child.",q:"Church of Our Lady Bruges",lab:[12,-4,"start"]},
+  {id:"halvemaan",n:"Halve Maan",lon:3.2258,lat:51.2023,cat:"sight",days:[21],note:"Brewery tour hourly 11 to 4, 45 min, free glass of beer.",q:"De Halve Maan Brewery Bruges",lab:[13,5,"start"]},
+  {id:"torture",approx:1,n:"Torture Museum",lon:3.2250,lat:51.2075,cat:"sight",days:[23],note:"Oct 23 idea. Position approximate.",q:"Torture Museum Bruges",lab:[13,6,"start"]},
+  {id:"diamond",approx:1,n:"Diamond Museum",lon:3.2222,lat:51.2038,cat:"sight",days:[23],note:"Free diamond with ticket. Position approximate.",q:"Diamond Museum Bruges",lab:[-12,5,"end"]},
+  {id:"friet",n:"Friet Museum",lon:3.2253,lat:51.2106,cat:"sight",days:[23],note:"Where fries get their story.",q:"Friet Museum Bruges",lab:[-12,-1,"end"]},
+  {id:"kant",approx:1,n:"Kantcentrum (lace)",lon:3.2312,lat:51.2110,cat:"hunt",days:[23],note:"Lace-making demo for Lauren. Position approximate.",q:"Kantcentrum Bruges",lab:[13,5,"start"]},
+  {id:"beguinage",n:"Beguinage",lon:3.2218,lat:51.2018,cat:"sight",days:[23],note:"Est. 1245. Quiet gardens.",q:"Begijnhof Bruges",lab:[-12,5,"end"]},
+  {id:"minnewater",n:"Minnewater",lon:3.2237,lat:51.2004,cat:"sight",days:[22,23],note:"The Lake of Love, a peaceful walk.",q:"Minnewater Bruges",lab:[13,5,"start"]},
+  {id:"windmills",approx:1,n:"Windmills",lon:3.2333,lat:51.2152,cat:"sight",days:[22,23],note:"Windmills along the east canal. Position approximate.",q:"Sint-Janshuismolen Bruges",lab:[-12,5,"end"]},
+  {id:"trainstn",n:"Train station",lon:3.2170,lat:51.1972,cat:"transit",days:[22],note:"Trains to Ghent. Dunkirk is a 53 min drive by rental car.",q:"Brugge railway station",lab:[13,5,"start"]}],
+ days:[20,21,22,23],off:"Off the map: Dunkirk (53 min by car) and Ghent."};
+
+/* Bruges uses a real 1890s Baedeker map (public domain). Pins are placed by hand on it,
+   in pixels of the original 875 x 1203 scan, so they sit on the right streets. */
+(function(){
+  const K=0.62, PX={hotel:[470,596,-12,6,"end"],cambrinus:[393,688,0,-14,"middle"],markt:[338,706,-9,-6,"end"],belfry:[344,731,-12,12,"end"],
+    chezalbert:[371,723,11,14,"start"],basilica:[392,757,11,8,"start"],torture:[358,792,11,10,"start"],friet:[368,640,-11,4,"end"],
+    vlissinghe:[565,580,11,-4,"start"],kant:[640,662,11,5,"start"],windmills:[832,600,-12,5,"end"],sintjan:[214,882,0,24,"middle"],
+    ladyc:[272,872,12,-2,"start"],diamond:[268,955,12,8,"start"],halvemaan:[233,955,-12,-8,"end"],beguinage:[155,975,0,22,"middle"],
+    minnewater:[168,1075,12,5,"start"],trainstn:[55,990,8,32,"start"]};
+  const m=MAPS.bruges;
+  m.img={src:"maps/bruges-1890.jpg",w:875*K,h:1203*K}; m.sub="Baedeker map, 1890s";
+  m.vb={x:25,y:165,w:470,h:587.5}; m.maxW=542;
+  m.pts.forEach(pt=>{const v=PX[pt.id]; if(v){pt.px=[v[0]*K,v[1]*K]; pt.lab=[v[2],v[3],v[4]]}});
+  m.off="Old map, modern pins: the city center has barely changed since the 1890s. The train station has moved since, so its pin is approximate. Off the map: Dunkirk (53 min by car) and Ghent.";
+})();
+/* Amsterdam (Baedeker, early 1900s) and Prague (Murray's Handbook, 1800s) are real antique maps too.
+   geo = fitted transform from lon/lat to pixels on the original scan, checked against landmarks and canals. */
+MAPS.amsterdam.img={src:"maps/amsterdam-1900.jpg",w:570*1.6,h:448*1.6,k:1.6,geo:[7082.788429,-6155.300372,287957.079812,-3511.228599,-11648.859835,627455.002921]};
+MAPS.amsterdam.sub="Baedeker map, early 1900s"; MAPS.amsterdam.vb={x:204,y:50,w:520,h:650}; MAPS.amsterdam.maxW=912;
+MAPS.amsterdam.off="Old map, modern pins. Pins are close but not exact on an old map, so tap Open in Maps for the exact spot. Off the map: Haarlem, Zaanse Schans and Delft.";
+MAPS.prague.img={src:"maps/prague-1800s.jpg",w:735*1.2,h:556*1.2,k:1.2,geo:[10362.518081,-1868.262141,-55452.194067,242.099847,-15172.720643,756655.733173]};
+MAPS.prague.sub="Murray's Handbook map, 1800s"; MAPS.prague.vb={x:60,y:8,w:530,h:662}; MAPS.prague.maxW=882;
+MAPS.prague.off="Old map, modern pins, so tap Open in Maps for the exact spot. The hotel isn't pinned yet because its name isn't in the plan. Brevnov Monastery is off the old map to the west.";
+const XY=pt=>{ if(pt.px) return pt.px; const g=CM.img&&CM.img.geo; if(g){const k=CM.img.k; return [(g[0]*pt.lon+g[1]*pt.lat+g[2])*k,(g[3]*pt.lon+g[4]*pt.lat+g[5])*k]} return P(pt.lon,pt.lat); };
+
+const _lay={};
+function cityLayout(){
+  const k=state.city; if(_lay[k]) return _lay[k];
+  const m=CM, poly=a=>LL(a).map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  if(m.img) return _lay[k]=`<image href="${m.img.src}" x="0" y="0" width="${m.img.w.toFixed(1)}" height="${m.img.h.toFixed(1)}" preserveAspectRatio="none"/>`;
+  let o=`<defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><line x1="0" y1="0" x2="0" y2="7" stroke="#6F8F94" stroke-width=".9" opacity=".55"/></pattern></defs>`;
+  (m.parks||[]).forEach(a=>o+=`<polygon class="m-park" points="${poly(a)}"/>`);
+  (m.blocks||[]).forEach(a=>o+=`<polygon class="m-block" points="${poly(a)}"/>`);
+  if(m.big){const ij=LL(m.big.pts);const d=`${smooth(ij)} L${ij[ij.length-1][0]} -900 L${ij[0][0]} -900 Z`;o+=`<path class="m-ij" d="${d}"/><path d="${d}" fill="url(#hatch)"/>`}
+  (m.lakes||[]).forEach(a=>o+=`<polygon class="m-ij" points="${poly(a)}"/><polygon points="${poly(a)}" fill="url(#hatch)"/>`);
+  (m.streets||[]).forEach(([id,w,a])=>o+=`<path class="m-case" id="s-${id}" d="${smooth(LL(a))}" stroke-width="${w+1.8}"/>`);
+  (m.streets||[]).forEach(([id,w,a])=>o+=`<path class="m-st" d="${smooth(LL(a))}" stroke-width="${w}"/>`);
+  (m.plazas||[]).forEach(a=>o+=`<polygon class="m-plaza" points="${poly(a)}"/>`);
+  (m.water||[]).forEach(([id,w,a])=>o+=`<path class="m-wedge" d="${smooth(LL(a))}" stroke-width="${w+2}"/>`);
+  (m.water||[]).forEach(([id,w,a])=>o+=`<path class="m-water" d="${smooth(LL(a))}" stroke-width="${w}"/>`);
+  (m.bridges||[]).forEach(([id,w,a])=>o+=`<path class="m-case" d="${smooth(LL(a))}" stroke-width="${w+2.2}" stroke-linecap="butt"/>`);
+  (m.bridges||[]).forEach(([id,w,a])=>o+=`<path class="m-st" d="${smooth(LL(a))}" stroke-width="${w}" stroke-linecap="butt"/>`);
+  (m.hoods||[]).forEach(([t,lo,la])=>{const [x,y]=P(lo,la);o+=`<text class="m-hood" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle">${t}</text>`});
+  (m.slabels||[]).forEach(([id,t,off])=>o+=`<text class="m-lbl"><textPath href="#s-${id}" startOffset="${off}%">${t}</textPath></text>`);
+  (m.wlabels||[]).forEach(([t,a,off,dy],i)=>o+=`<path id="w-${i}" d="${smooth(LL(a))}" fill="none"/><text class="m-wlbl" dy="${dy===undefined?-5:dy}"><textPath href="#w-${i}" startOffset="${off}%">${t}</textPath></text>`);
+  if(m.big&&m.big.label){const [t,lo,la]=m.big.label,[x,y]=P(lo,la);o+=`<text class="m-wlbl" x="${x}" y="${y}" text-anchor="middle" style="font-size:17px;letter-spacing:4px">${t}</text>`}
+  return _lay[k]=o;
+}
+function viewCityMap(){
+  CM=MAPS[state.city];
+  const f=state.dayF, route=state.city==="amsterdam"&&f!=="all";
+  const days=[["all","All"]].concat(CM.days.map(d=>[d,"Oct "+d]));
+  const chips=`<div class="strip">${days.map(([k,l])=>`<button class="chip" aria-pressed="${f===k}" data-dayf="${k}">${l}</button>`).join("")}</div>`;
+  const zoom=`<div class="zoomctl"><button data-zoom="in" aria-label="Zoom in">+</button><button data-zoom="out" aria-label="Zoom out">−</button><button data-zoom="reset" aria-label="Reset view" style="font-size:16px">⌂</button></div>`;
+  const top=`<div class="strip"><button class="chip" data-back="1">Back to route map</button>${Object.keys(CITY).map(k=>`<button class="chip" aria-pressed="${state.city===k}" data-city="${k}">${CITY[k].name}</button>`).join("")}</div>`;
+  if(route){
+    const tday=DAYS.find(d=>d.city==="amsterdam"&&dayNum(d)===f);
+    if(tday&&!tday.items.some(x=>x.pt)) return top+chips+tripPanel(tday);
+    const r=viewDayRoute(f);
+    return `${top}${chips}${r.off}<div class="citywrap paper">${r.compass}<div class="mtitle">${r.title}</div>${r.svg}${zoom}${r.sheet}</div>
+     <div class="note small" style="margin:0 2px 10px">Numbers follow the day's order. The dashed line shows the order, not the exact streets. Gold is booked.</div>${r.list}`;
+  }
+  if(!state.vb) state.vb=Object.assign({},CM.vb);
+  const vb=state.vb;
+  const hit=pt=>pt.days==="all"||f==="all"||pt.days.includes(f);
+  let dots="";
+  CM.pts.filter(p=>!p.x).sort((a,b)=>(hit(a)?1:0)-(hit(b)?1:0)).forEach(pt=>{
+    const [x,y]=XY(pt), on=hit(pt), sel=state.sel===pt.id, col=DOTCOL[pt.cat];
+    const small=pt.cat==="landmark", r=small?5:pt.cat==="book"?10:8.5;
+    const [dx,dy,an]=pt.lab, X=x.toFixed(1), Y=y.toFixed(1);
+    dots+=`<g class="mdot" data-dot="${pt.id}" tabindex="0" role="button" aria-label="${pt.n}" opacity="${on?1:.28}">
+      <circle cx="${X}" cy="${Y}" r="22" fill="transparent"/>
+      ${sel?`<circle cx="${X}" cy="${Y}" r="${r+7}" fill="none" stroke="${col}" stroke-width="2.5" opacity=".6"/>`:""}
+      ${pt.approx?`<circle cx="${X}" cy="${Y}" r="${r+4}" fill="none" stroke="#2A1D10" stroke-width="1.2" stroke-dasharray="3 2.5" opacity=".8"/>`:""}
+      <circle cx="${X}" cy="${Y}" r="${r}" fill="${col}" stroke="#F3E7C6" stroke-width="2.5"/>
+      ${pt.cat==="book"?`<circle cx="${X}" cy="${Y}" r="3" fill="#2A1D10"/>`:""}
+      <text class="m-dl" x="${(x+dx).toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${an}" ${small?'style="font-size:13px;font-style:italic"':""}>${pt.n}</text></g>`;
+  });
+  const svg=`<svg id="citymap" viewBox="${vb.x.toFixed(1)} ${vb.y.toFixed(1)} ${vb.w.toFixed(1)} ${vb.h.toFixed(1)}" role="img" aria-label="Street map of ${CM.name} with itinerary locations">${cityLayout()}${dots}</svg>`;
+  let sheet="";
+  const sp=CM.pts.find(p=>p.id===state.sel);
+  if(sp){
+    const dl=(sp.days==="all"||sp.cal)?"":sp.days.map(d=>"Oct "+d).join(", ");
+    sheet=`<div class="sheet"><button class="x" data-desel aria-label="Close">×</button><b>${sp.n}</b><div class="note">${dl?dl+". ":""}${sp.note}${sp.approx&&!/approximate/i.test(sp.note)?" Position approximate.":""}</div><div class="acts"><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(sp.q)}">Open in Maps</a>${sp.cal?`<a class="btn primary" target="_blank" rel="noopener" href="${gcal({date:sp.cal.date},sp.cal)}">Add to calendar</a>`:""}</div></div>`;
+  }
+  const legend=`<div class="legend">${["book","sight","food","bar","hunt","stay"].map(k=>`<span><span class="dot" style="background:${DOTCOL[k]}"></span>${DOTLAB[k]}</span>`).join("")}<span><span class="dot" style="background:none;border:1.5px dashed #2A1D10;width:9px;height:9px"></span>Approximate</span></div>`;
+  const compass='<svg class="compass" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="none" stroke="#6B4F2C" stroke-width="1.5"/><circle cx="32" cy="32" r="24" fill="none" stroke="#6B4F2C" stroke-width=".8"/><polygon points="32,3 36,28 61,32 36,36 32,61 28,36 3,32 28,28" fill="#8A6A3A" stroke="#4A3520" stroke-width=".8"/><polygon points="32,3 36,28 28,28" fill="#A8432F" stroke="#4A3520" stroke-width=".8"/></svg>';
+  return `<div class="strip"><button class="chip" data-back="1">Back to route map</button>${Object.keys(CITY).map(k=>`<button class="chip" aria-pressed="${state.city===k}" data-city="${k}">${CITY[k].name}</button>`).join("")}</div>
+   ${chips}<div class="citywrap paper">${compass}<div class="mtitle"><b>${CM.name}</b><i>${CM.sub||"Anno 2026, north is up"}</i></div>${svg}<div class="zoomctl"><button data-zoom="in" aria-label="Zoom in">+</button><button data-zoom="out" aria-label="Zoom out">−</button><button data-zoom="reset" aria-label="Reset view" style="font-size:16px">⌂</button></div>${sheet}</div>${legend}
+   <div class="note small">Hand-drawn sketch. Dot positions are approximate, so tap Open in Maps for the exact spot. Drag to pan, pinch or use + and − to zoom. ${CM.off}</div>`;
+}
+/* pan and zoom */
+const ptrs=new Map(); let drag=null;
+function applyVb(){const s=$("#citymap");if(s){const v=state.vb;s.setAttribute("viewBox",`${v.x.toFixed(1)} ${v.y.toFixed(1)} ${v.w.toFixed(1)} ${v.h.toFixed(1)}`)}}
+function zoomAt(cx,cy,k){
+  const s=$("#citymap");if(!s)return;const r=s.getBoundingClientRect(),v=state.vb;
+  const fx=(cx-r.left)/r.width, fy=(cy-r.top)/r.height;
+  const px=v.x+fx*v.w, py=v.y+fy*v.h;
+  const w=Math.min(CM.maxW||800,Math.max(150,v.w*k)), h=w*1.25;
+  v.x=px-fx*w; v.y=py-fy*h; v.w=w; v.h=h; applyVb();
+}
+document.addEventListener("pointerdown",e=>{
+  const s=e.target.closest("#citymap"); if(!s) return;
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  try{s.setPointerCapture(e.pointerId)}catch(err){}
+  const dot=e.target.closest("[data-dot]");
+  if(ptrs.size===1) drag={moved:false,dot:dot?dot.dataset.dot:null,sx:e.clientX,sy:e.clientY};
+  else if(drag){drag.moved=true;const [a,b]=[...ptrs.values()];drag.pd=Math.hypot(a.x-b.x,a.y-b.y)}
+});
+document.addEventListener("pointermove",e=>{
+  if(!ptrs.has(e.pointerId)||!drag) return;
+  const old=ptrs.get(e.pointerId), s=$("#citymap"); if(!s) return;
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1){
+    if(Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)>6) drag.moved=true;
+    if(drag.moved){const r=s.getBoundingClientRect(),v=state.vb;v.x-=(e.clientX-old.x)*v.w/r.width;v.y-=(e.clientY-old.y)*v.h/r.height;applyVb()}
+  } else if(ptrs.size===2){
+    const [a,b]=[...ptrs.values()], nd=Math.hypot(a.x-b.x,a.y-b.y);
+    if(drag.pd&&nd>0) zoomAt((a.x+b.x)/2,(a.y+b.y)/2,drag.pd/nd);
+    drag.pd=nd;
+  }
+});
+function endPtr(e){
+  if(!ptrs.has(e.pointerId)) return;
+  const wasOne=ptrs.size===1; ptrs.delete(e.pointerId);
+  if(wasOne&&drag&&!drag.moved&&drag.dot&&e.type==="pointerup"){state.sel=drag.dot;drag=null;render();return}
+  if(ptrs.size===0) drag=null;
+}
+document.addEventListener("pointerup",endPtr);
+document.addEventListener("pointercancel",endPtr);
+document.addEventListener("wheel",e=>{if(e.target.closest&&e.target.closest("#citymap")){e.preventDefault();zoomAt(e.clientX,e.clientY,e.deltaY>0?1.12:.89)}},{passive:false});
+
+/* ---------- EVENTS ---------- */
+document.addEventListener("click",e=>{
+  if(e.target.closest("summary")) return;
+  const t=e.target.closest("[data-tab],[data-day],[data-city],[data-filter],[data-lcity],[data-lcat],[data-fact],[data-vote],[data-open],[data-back],[data-zoom],[data-dayf],[data-desel],[data-dmap],[data-area],[data-nudgex],#copyVotes");
+  if(!t) return;
+  const d=t.dataset;
+  if(d.nudgex!==undefined){store.set("installHide",true);render();return}
+  if(d.tab){e.preventDefault();state.tab=d.tab;window.scrollTo(0,0)}
+  else if(d.area){state.area=state.area===d.area?null:d.area}
+  else if(d.dmap){state.tab="map";state.city="amsterdam";state.mapOpen=true;state.dayF=+d.dmap;state.vb=null;state.sel=null;window.scrollTo(0,0)}
+  else if(d.day!==undefined){state.dayIdx=+d.day}
+  else if(d.vote){const v=store.get("votes",{});v[d.vote]=d.val;store.set("votes",v)}
+  else if(d.open!==undefined){state.dayIdx=+d.open;state.tab="today";window.scrollTo(0,0)}
+  else if(d.back){state.mapOpen=false;state.sel=null}
+  else if(d.zoom){const s=$("#citymap");if(s){const r=s.getBoundingClientRect();if(d.zoom==="reset"){state.vb=null;state.sel=null}else{zoomAt(r.left+r.width/2,r.top+r.height/2,d.zoom==="in"?.7:1.4);return}}}
+  else if(d.dayf){state.dayF=d.dayf==="all"?"all":+d.dayf;state.sel=null;if(state.city==="amsterdam")state.vb=null}
+  else if(d.desel!==undefined){state.sel=null}
+  else if(d.city){state.city=d.city;state.filter="all";state.sel=null;state.mapOpen=!!MAPS[d.city];state.vb=null;state.dayF="all"}
+  else if(d.filter){state.filter=d.filter}
+  else if(d.lcity){state.learnCity=d.lcity;state.openFact=null}
+  else if(d.lcat){state.learnCat=d.lcat}
+  else if(d.fact){state.openFact=state.openFact===d.fact?null:d.fact}
+  else if(t.id==="copyVotes"){
+    const v=store.get("votes",{});
+    const txt="My picks:\n"+Object.keys(VOTES).map(id=>`${VOTES[id].label}: ${v[id]||"no pick yet"}`).join("\n");
+    try{navigator.clipboard.writeText(txt).then(()=>toast("Copied"),()=>toast("Could not copy"))}catch(err){toast("Could not copy")}
+    return;
+  }
+  render();
+});
+document.addEventListener("change",e=>{
+  const c=e.target.closest("[data-check]"); if(!c) return;
+  const done=store.get("checks",{}); done[c.dataset.check]=c.checked; store.set("checks",done);
+  c.closest(".check").classList.toggle("done",c.checked);
+});
+document.addEventListener("keydown",e=>{
+  if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".sk-area")){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}));return}
+  if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".mdot")){e.preventDefault();state.sel=e.target.dataset.dot;render();return}
+  if((e.key==="Enter"||e.key===" ")&&e.target.matches(".pin")){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}))}
+});
+render();
+</script>
+</body>
+</html>
