@@ -189,6 +189,13 @@ nav.tabs button[aria-selected="true"]{color:var(--accent)}
 .areacard .x{position:absolute;top:-6px;right:-6px;border:0;background:none;font-size:26px;color:var(--muted);width:40px;height:40px}
 .seelist{display:flex;flex-wrap:wrap;gap:6px}
 .seelist span{background:var(--bg);border-radius:8px;padding:3px 9px;font-size:14.5px}
+/* days that have passed */
+.daychip.past:not([aria-pressed="true"]){opacity:.45;filter:grayscale(.85)}
+.chip.past:not([aria-pressed="true"]){opacity:.5;filter:grayscale(.85);text-decoration:line-through}
+.tripcard.past{opacity:.55;filter:grayscale(.8)}
+.tag.done{background:var(--muted);color:var(--card);margin-left:4px}
+.pastnote{font-size:15px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;margin:0 0 10px}
+.pastwrap{opacity:.6;filter:grayscale(.75)}
 /* install card */
 .alert.nudge{position:relative;padding-right:40px}
 .alert.nudge .x{position:absolute;top:2px;right:4px;border:0;background:none;font-size:24px;color:var(--muted);width:36px;height:36px}
@@ -712,21 +719,22 @@ function viewToday(){
   let hero;
   if(inTrip){
     const nb=nextBooking();
-    hero=`<div class="hero${sk?" withsk":""}">${sk}<p>${CITY[day.city].name}, ${fmtDate(day.date)}</p><h2>${day.title}</h2>${where}${nb?`<p>Next booking: ${nb.it.title} in ${untilStr(nb.s-Date.now())}</p>`:""}</div>`;
+    hero=`<div class="hero${sk?" withsk":""}">${sk}<p>${CITY[day.city].name}, ${fmtDate(day.date)}</p><h2>${day.title}</h2>${where}${day.date<T?`<p>✓ Done</p>`:nb?`<p>Next booking: ${nb.it.title} in ${untilStr(nb.s-Date.now())}</p>`:""}</div>`;
   } else if(T<trip0){
     const days=Math.ceil((parse(trip0).dt-parse(T).dt)/86400000);
     hero=`<div class="hero${sk?" withsk":""}">${sk}<p>Trip starts Saturday, Oct 10</p><div class="big">${days} day${days===1?"":"s"} to go</div><p>Previewing ${fmtDate(day.date)}: ${day.title}</p>${where}</div>`;
   } else {
     hero=`<div class="hero${sk?" withsk":""}">${sk}<p>The trip is over</p><h2>What a trip</h2><p>Browsing ${fmtDate(day.date)}: ${day.title}</p></div>`;
   }
-  const strip=`<div class="strip">${DAYS.map((d,i)=>{const p=parse(d.date);return `<button class="daychip${d.date===T?" today":""}" style="--c:${CITY[d.city].color}" aria-pressed="${i===state.dayIdx}" data-day="${i}"><small>${WD[p.dt.getDay()]}</small><b>${p.d}</b><small>${CITY[d.city].name.slice(0,3)}</small></button>`}).join("")}</div>`;
+  const strip=`<div class="strip">${DAYS.map((d,i)=>{const p=parse(d.date);return `<button class="daychip${d.date===T?" today":""}${d.date<T?" past":""}" style="--c:${CITY[d.city].color}" aria-pressed="${i===state.dayIdx}" data-day="${i}"><small>${WD[p.dt.getDay()]}</small><b>${p.d}</b><small>${CITY[d.city].name.slice(0,3)}</small></button>`}).join("")}</div>`;
   const facts=FACTS[day.city]; const f=facts[state.dayIdx%facts.length];
   const alertCancel = (day.city==="prague" && T<=CANCEL_BY) ? `<div class="alert"><b>Prague cancellation deadline: Oct 9</b>Bookings can be cancelled until then. <a href="${gcalCancel()}" target="_blank" rel="noopener">Add a reminder</a></div>`:"";
   const vote = day.open ? `<div class="card"><h3 style="font-size:18px">Where should we go?</h3>${voteHtml(day.open)}</div>`:"";
   const mapBtn = (hasPts||(isA&&day.trip)) ? `<div class="acts" style="margin:0 0 12px"><button class="btn primary" data-dmap="${dayNum(day)}">See this day on the map</button></div>`:"";
   const standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
   const nudge=(!standalone&&!store.get("installHide",false))?`<div class="alert nudge"><button class="x" data-nudgex aria-label="Dismiss">×</button><b>Put Classy European Vacation on your phone</b>Add it to your home screen so it opens like an app. <a href="#" data-tab="trip">Show me how</a></div>`:"";
-  return nudge+strip+hero+alertCancel+mapBtn+`<div class="card">${items.map(it=>itemHtml(day,it)).join("")}</div>`+vote+
+  const pastDay=day.date<T, pastNote=pastDay?`<div class="pastnote">This day is behind us. Tap a date above, or <a href="#" data-day="${Math.max(0,DAYS.findIndex(d=>d.date===T))}">jump to today</a>.</div>`:"";
+  return nudge+strip+pastNote+(pastDay?`<div class="pastwrap">`:"")+hero+alertCancel+mapBtn+`<div class="card">${items.map(it=>itemHtml(day,it)).join("")}</div>`+(pastDay?"</div>":"")+vote+
    `<div class="card"><div class="cat muted small">Did you know?</div><h3 style="font-size:18px;margin:2px 0 6px">${f[1]}</h3><div>${f[2]}</div></div>`;
 }
 
@@ -737,21 +745,24 @@ function viewTrip(){
   const iosSteps=`<ol class="steps"><li>Open this link in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (the square with an arrow).</li><li>Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>`;
   const andSteps=`<ol class="steps"><li>Open this link in <b>Chrome</b>.</li><li>Tap the <b>⋮</b> menu in the top corner.</li><li>Tap <b>Add to Home screen</b> or <b>Install app</b>.</li></ol>`;
   let html=standalone?"":`<details class="card install" ${state.installOpen?"open":""}><summary><img src="apple-touch-icon.png" alt="" width="40" height="40">Put this app on your phone</summary>
-    <div class="note" style="color:var(--ink);margin-bottom:6px">It opens like an app from your home screen, with the compass icon and the name Classy European Vacation.</div>
+    <div class="note" style="color:var(--ink);margin-bottom:6px">It opens like an app from your home screen, with the skyline icon and the name Classy European Vacation.</div>
     ${ios?`<b>iPhone</b>${iosSteps}`:android?`<b>Android</b>${andSteps}`:`<b>iPhone</b>${iosSteps}<b>Android</b>${andSteps}`}
     <div class="note small">Checkmarks and votes are saved on each phone. Use "Copy my picks" in the Checklist to send yours to the group chat.</div></details>`;
-  html+=`<details class="card" open><summary>To sort out</summary>
-   <div class="alert"><b>Oct 10 timing</b>Dinner at Na Pekle is 6pm and Marina is 7:30pm, and Marilyn and Wittie land between 6 and 7. Likely one of these needs to move.</div>
-   <div class="alert"><b>Prague cancellations by Oct 9</b>All Prague bookings can be cancelled until then.</div>
-   <div class="alert"><b>Open days</b>Amsterdam is planned. Oct 21 to 23 in Bruges have ideas but no plan yet. Vote in the Checklist tab.</div>
-   <div class="alert"><b>Ten Boom Museum, Oct 17</b>Sold out so far. Check back closer to the date.</div></details>`;
-  html+=`<div class="card"><h3 style="font-size:18px">${nBooked} reservations</h3><div class="note">Use Add to calendar on any booking.</div><div class="acts" style="margin-top:10px"><a class="btn" href="${gcalCancel()}" target="_blank" rel="noopener">Prague cancel reminder</a></div></div>`;
+  /* each to-do disappears once its last relevant day has passed */
+  const TODO=[
+   ["2026-10-10","Oct 10 timing","Dinner at Na Pekle is 6pm and Marina is 7:30pm, and Marilyn and Wittie land between 6 and 7. Likely one of these needs to move."],
+   ["2026-10-09","Prague cancellations by Oct 9","All Prague bookings can be cancelled until then."],
+   ["2026-10-17","Ten Boom Museum, Oct 17","Sold out so far. Check back closer to the date."],
+   ["2026-10-23","Open days","Oct 21 to 23 in Bruges have ideas but no plan yet. Vote in the Checklist tab."]].filter(t=>T<=t[0]);
+  if(TODO.length) html+=`<details class="card" open><summary>To sort out</summary>${TODO.map(t=>`<div class="alert"><b>${t[1]}</b>${t[2]}</div>`).join("")}</details>`;
+  html+=`<div class="card"><h3 style="font-size:18px">${nBooked} reservations</h3><div class="note">Use Add to calendar on any booking.</div>${T<=CANCEL_BY?`<div class="acts" style="margin-top:10px"><a class="btn" href="${gcalCancel()}" target="_blank" rel="noopener">Prague cancel reminder</a></div>`:""}</div>`;
   let cur="";
   DAYS.forEach((d,i)=>{
     if(d.city!==cur){cur=d.city;html+=`<div class="sect" style="color:${CITY[cur].color}">${CITY[cur].name}${cur==="prague"?" (Oct 10 to 13)":cur==="amsterdam"?" (Oct 14 to 20)":" (Oct 20 to 24)"}</div>`}
     const bk=d.items.filter(x=>x.b);
     const tsk=d.areas?`<div class="tripsk" aria-hidden="true">${sketchSvg({hi:d.areas,mini:true,col:"#1E6A8C"})}</div>`:"";
-    html+=`<button class="card tripcard" style="width:100%;text-align:left;border-left:6px solid ${CITY[d.city].color}" data-open="${i}">${tsk}<div class="muted small">${fmtDate(d.date)}</div><div class="ttl">${d.title}</div>${d.areas?`<div class="note" style="color:var(--ams);font-weight:600">${whereLine(d)}</div>`:""}${bk.length?`<div class="note">${bk.map(b=>`<span class="hl" style="background:var(--mark);padding:0 4px;border-radius:3px;color:var(--ink)">${b.t}</span> ${b.title}`).join("<br>")}</div>`:`<div class="note">${d.items.length} items</div>`}</button>`;
+    const past=d.date<T;
+    html+=`<button class="card tripcard${past?" past":""}" style="width:100%;text-align:left;border-left:6px solid ${CITY[d.city].color}" data-open="${i}">${tsk}<div class="muted small">${fmtDate(d.date)}${past?' <span class="tag done">Done</span>':""}</div><div class="ttl">${d.title}</div>${d.areas?`<div class="note" style="color:var(--ams);font-weight:600">${whereLine(d)}</div>`:""}${bk.length?`<div class="note">${bk.map(b=>`<span class="hl" style="background:var(--mark);padding:0 4px;border-radius:3px;color:var(--ink)">${b.t}</span> ${b.title}`).join("<br>")}</div>`:`<div class="note">${d.items.length} items</div>`}</button>`;
   });
   return html;
 }
@@ -1120,7 +1131,7 @@ function viewCityMap(){
   CM=MAPS[state.city];
   const f=state.dayF, route=state.city==="amsterdam"&&f!=="all";
   const days=[["all","All"]].concat(CM.days.map(d=>[d,"Oct "+d]));
-  const chips=`<div class="strip">${days.map(([k,l])=>`<button class="chip" aria-pressed="${f===k}" data-dayf="${k}">${l}</button>`).join("")}</div>`;
+  const chips=`<div class="strip">${days.map(([k,l])=>`<button class="chip${k!=="all"&&("2026-10-"+String(k).padStart(2,"0"))<T?" past":""}" aria-pressed="${f===k}" data-dayf="${k}">${l}</button>`).join("")}</div>`;
   const zoom=`<div class="zoomctl"><button data-zoom="in" aria-label="Zoom in">+</button><button data-zoom="out" aria-label="Zoom out">−</button><button data-zoom="reset" aria-label="Reset view" style="font-size:16px">⌂</button></div>`;
   const top=`<div class="strip"><button class="chip" data-back="1">Back to route map</button>${Object.keys(CITY).map(k=>`<button class="chip" aria-pressed="${state.city===k}" data-city="${k}">${CITY[k].name}</button>`).join("")}</div>`;
   if(route){
