@@ -648,7 +648,8 @@ const store = {
 const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const parse = iso => {const [y,m,d]=iso.split("-").map(Number);return {y,m,d,dt:new Date(y,m-1,d)}};
 const fmtDate = iso => {const p=parse(iso);return `${WD[p.dt.getDay()]}, ${MO[p.m-1]} ${p.d}`};
-const todayIso = () => {const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`};
+/* "Today" is always Prague/Amsterdam/Bruges local time, whatever time zone the phone is set to */
+const todayIso = () => {try{return new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Prague",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}catch(e){const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`}};
 const mapsUrl = q => "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
 const startUtc = (iso,t) => {const p=parse(iso);const [h,mi]=t.split(":").map(Number);return Date.UTC(p.y,p.m-1,p.d,h-2,mi)}; /* CEST = UTC+2 */
 const z = ms => new Date(ms).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
@@ -664,8 +665,8 @@ function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTi
 
 /* ---------- STATE ---------- */
 const trip0 = DAYS[0].date, tripN = DAYS[DAYS.length-1].date;
-const T = todayIso();
-const inTrip = T>=trip0 && T<=tripN;
+let T = todayIso();
+let inTrip = T>=trip0 && T<=tripN;
 const state = {
   tab:"today",
   dayIdx: inTrip ? Math.max(0,DAYS.findIndex(d=>d.date===T)) : 0,
@@ -1252,6 +1253,17 @@ document.addEventListener("keydown",e=>{
   if((e.key==="Enter"||e.key===" ")&&e.target.matches(".pin")){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}))}
 });
 render();
+/* When the app is reopened from the home screen (or the date rolls over), re-check the date */
+function refreshDay(){
+  const nt=todayIso(); if(nt===T) return;
+  T=nt; inTrip=T>=trip0&&T<=tripN;
+  if(inTrip){const i=DAYS.findIndex(d=>d.date===T); if(i>=0){state.dayIdx=i; state.city=DAYS[i].city; state.learnCity=state.city;}}
+  render();
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshDay()});
+window.addEventListener("pageshow",refreshDay);
+window.addEventListener("focus",refreshDay);
+setInterval(refreshDay,60000);
 </script>
 </body>
 </html>
