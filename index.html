@@ -196,6 +196,9 @@ nav.tabs button[aria-selected="true"]{color:var(--accent)}
 .tag.done{background:var(--muted);color:var(--card);margin-left:4px}
 .pastnote{font-size:15px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;margin:0 0 10px}
 .pastwrap{opacity:.6;filter:grayscale(.75)}
+/* past items on maps */
+.place.past{opacity:.5;filter:grayscale(.85)}
+.m-dl.gone{fill:#7d776f}
 /* install card */
 .alert.nudge{position:relative;padding-right:40px}
 .alert.nudge .x{position:absolute;top:2px;right:4px;border:0;background:none;font-size:24px;color:var(--muted);width:36px;height:36px}
@@ -696,7 +699,7 @@ function itemHtml(day,it){
   const title = it.b ? `${num}<span class="hl">${it.title}</span><span class="tag book">Booked</span>` : `${num}${it.title}${it.top?'<span class="tag top">Don\'t miss</span>':""}${it.o?'<span class="tag opt">Idea</span>':''}`;
   let acts="";
   if(it.q||it.b){
-    acts = `<div class="acts">${it.q?`<a class="btn" target="_blank" rel="noopener" href="${mapsUrl(it.q)}">Open in Maps</a>`:""}${it.b&&it.t?`<a class="btn primary" target="_blank" rel="noopener" href="${gcal(day,it)}">Add to calendar</a>`:""}</div>`;
+    acts = `<div class="acts">${it.q?`<a class="btn" target="_blank" rel="noopener" href="${mapsUrl(it.q)}">Open in Maps</a>`:""}${it.b&&it.t&&day.date>=T?`<a class="btn primary" target="_blank" rel="noopener" href="${gcal(day,it)}">Add to calendar</a>`:""}</div>`;
   }
   return `<div class="item">${time}<div><div class="ttl">${title}</div>${it.note?`<div class="note">${it.note}</div>`:""}${it.w?`<div class="warn">${it.w}</div>`:""}${acts}</div></div>`;
 }
@@ -792,14 +795,13 @@ function viewMap(){
    ${EU.labels.map(([t,x,y])=>`<text x="${x}" y="${y}" text-anchor="middle" class="${t==="NORTH SEA"?"eu-sea":"eu-c"}">${t==="NORTH SEA"?"North Sea":t}</text>`).join("")}
    ${EU.others.filter(o=>o[0]!=="Haarlem").map(([t,x,y])=>`<circle cx="${x}" cy="${y}" r="1.8" fill="#5A4630"/><text x="${x+4}" y="${y+3}" class="eu-o">${t}</text>`).join("")}
    ${EU.gratLabels.map(([t,x,y])=>`<text x="${x}" y="${y}" class="eu-g" text-anchor="middle">${t}</text>`).join("")}
-   <path d="${fly.d}" fill="none" stroke="#3A2A1C" stroke-width="1.6" stroke-dasharray="5 4" stroke-linecap="round"/>
-   <path d="${rail.d}" fill="none" stroke="#3A2A1C" stroke-width="2.2" stroke-dasharray="1 0"/><path d="${rail.d}" fill="none" stroke="#EFE2C2" stroke-width="1" stroke-dasharray="4 4"/>
-   ${plane}
-   <text x="${(fly.cx+6).toFixed(1)}" y="${(fly.cy-8).toFixed(1)}" class="eu-r">Oct 14, by air</text>
-   <text x="${(rail.cx+8).toFixed(1)}" y="${(rail.cy+10).toFixed(1)}" class="eu-r">Oct 20, by rail</text>
-   ${Object.entries(pos).map(([k,[x,y]])=>`<g class="pin" data-city="${k}" tabindex="0" role="button" aria-label="${CITY[k].name}">
+   <g opacity="${dPast(14)?.4:1}"><path d="${fly.d}" fill="none" stroke="#3A2A1C" stroke-width="1.6" stroke-dasharray="5 4" stroke-linecap="round"/>${plane}
+   <text x="${(fly.cx+6).toFixed(1)}" y="${(fly.cy-8).toFixed(1)}" class="eu-r">Oct 14, by air${dPast(14)?" ✓":""}</text></g>
+   <g opacity="${dPast(20)?.4:1}"><path d="${rail.d}" fill="none" stroke="#3A2A1C" stroke-width="2.2" stroke-dasharray="1 0"/><path d="${rail.d}" fill="none" stroke="#EFE2C2" stroke-width="1" stroke-dasharray="4 4"/>
+   <text x="${(rail.cx+8).toFixed(1)}" y="${(rail.cy+10).toFixed(1)}" class="eu-r">Oct 20, by rail${dPast(20)?" ✓":""}</text></g>
+   ${Object.entries(pos).map(([k,[x,y]])=>`<g class="pin" data-city="${k}" tabindex="0" role="button" aria-label="${CITY[k].name}${dPast(CITY_LAST[k])?", visited":""}" opacity="${dPast(CITY_LAST[k])?.55:1}">
       <circle cx="${x}" cy="${y}" r="26" fill="transparent"/>
-      <circle cx="${x}" cy="${y}" r="${state.city===k?11:8}" fill="${CITY[k].color}" stroke="#F8F0DC" stroke-width="2.5"/>
+      <circle cx="${x}" cy="${y}" r="${state.city===k?11:8}" fill="${dPast(CITY_LAST[k])?"#9C968E":CITY[k].color}" stroke="#F8F0DC" stroke-width="2.5"/>
       <circle cx="${x}" cy="${y}" r="2.6" fill="#F8F0DC"/>
       <text x="${x+(k==="prague"?-4:-13)}" y="${y+(k==="prague"?-16:5)}" text-anchor="${k==="prague"?"middle":"end"}" class="eu-city">${CITY[k].name}</text></g>`).join("")}
    ${rose}
@@ -810,7 +812,7 @@ function viewMap(){
   const chips=`<div class="strip"><button class="chip" aria-pressed="${state.filter==="all"}" data-filter="all">All</button>${Object.entries(CATS).map(([k,[l]])=>`<button class="chip" aria-pressed="${state.filter===k}" data-filter="${k}">${l}</button>`).join("")}</div>`;
   const cityChips=`<div class="strip">${Object.keys(CITY).map(k=>`<button class="chip" aria-pressed="${state.city===k}" data-city="${k}">${CITY[k].name}</button>`).join("")}</div>`;
   const list=PLACES[state.city].filter(p=>state.filter==="all"||p[1]===state.filter);
-  return `<div class="mapbox">${svg}</div>${cityChips}${chips}<div class="card">${list.length?list.map(p=>`<div class="place"><div><div class="n"><span class="dot" style="background:${CATS[p[1]][1]}"></span>${p[0]}</div>${p[2]?`<div class="note">${p[2]}</div>`:""}</div><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(p[3])}">Maps</a></div>`).join(""):`<div class="muted">Nothing here yet.</div>`}</div>
+  return `<div class="mapbox">${svg}</div>${cityChips}${chips}<div class="card">${list.length?list.map(p=>`<div class="place${notePast(p[2])?" past":""}"><div><div class="n"><span class="dot" style="background:${CATS[p[1]][1]}"></span>${p[0]}${notePast(p[2])?'<span class="tag done">Done</span>':""}</div>${p[2]?`<div class="note">${p[2]}</div>`:""}</div><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(p[3])}">Maps</a></div>`).join(""):`<div class="muted">Nothing here yet.</div>`}</div>
    <div class="note small">Tap a city on the map to open its antique street map. Tap Maps on any place for real directions.</div>`;
 }
 
@@ -848,23 +850,23 @@ function viewDayRoute(dn){
     const w=Math.min(CM.maxW,Math.max(maxx-minx+120,(maxy-miny+150)*0.8,CM.img?380:260)), h=w*1.25;
     state.vb={x:(minx+maxx)/2-w/2,y:(miny+maxy)/2-h/2-h*0.05,w,h};
   }
-  const vb=state.vb, col="#1E6A8C";
-  const line=xy.length>1?`<polyline points="${xy.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" fill="none" stroke="${col}" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`:"";
+  const vb=state.vb, col="#1E6A8C", gonePath=dPast(dn);
+  const line=xy.length>1?`<polyline points="${xy.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" fill="none" stroke="${gonePath?"#9C968E":col}" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`:"";
   const ho=CM.pts.find(p=>p.id==="hotel"), [hx,hy]=XY(ho);
   const hotel=`<g><circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="8" fill="#2A1D10" stroke="#F3E7C6" stroke-width="2.5"/><text class="m-dl" x="${(hx+12).toFixed(1)}" y="${(hy+5).toFixed(1)}">Hotel</text></g>`;
   let dots="";
-  st.forEach((o,i)=>{const [x,y]=xy[i], id="s"+o.s.num, sel=state.sel===id, X=x.toFixed(1), Y=y.toFixed(1), c=o.s.b?"#C8951C":col;
+  st.forEach((o,i)=>{const [x,y]=xy[i], id="s"+o.s.num, sel=state.sel===id, X=x.toFixed(1), Y=y.toFixed(1), c=dPast(dn)?"#9C968E":o.s.b?"#C8951C":col;
     dots+=`<g class="mdot" data-dot="${id}" tabindex="0" role="button" aria-label="${o.s.num}. ${o.s.title}">
       <circle cx="${X}" cy="${Y}" r="22" fill="transparent"/>${sel?`<circle cx="${X}" cy="${Y}" r="18" fill="none" stroke="${c}" stroke-width="3" opacity=".6"/>`:""}
       <circle cx="${X}" cy="${Y}" r="12" fill="${c}" stroke="#F3E7C6" stroke-width="2.5"/>
       <text x="${X}" y="${(y+4.6).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" style="font-family:var(--head)">${o.s.num}</text></g>`});
   const svg=`<svg id="citymap" viewBox="${vb.x.toFixed(1)} ${vb.y.toFixed(1)} ${vb.w.toFixed(1)} ${vb.h.toFixed(1)}" role="img" aria-label="Route map for Oct ${dn}">${cityLayout()}${line}${hotel}${dots}</svg>`;
   const sel=st.find(o=>"s"+o.s.num===state.sel);
-  const sheet=sel?`<div class="sheet"><button class="x" data-desel aria-label="Close">×</button><b>${sel.s.num}. ${sel.s.title}</b><div class="note">${sel.s.note||""}${sel.s.w?` (${sel.s.w}.)`:""}</div><div class="acts"><a class="btn primary" target="_blank" rel="noopener" href="${mapsUrl(sel.s.q||sel.pt.q)}">Open in Maps</a>${sel.s.b&&sel.s.t?`<a class="btn" target="_blank" rel="noopener" href="${gcal(day,sel.s)}">Add to calendar</a>`:""}</div></div>`:"";
+  const sheet=sel?`<div class="sheet"><button class="x" data-desel aria-label="Close">×</button><b>${sel.s.num}. ${sel.s.title}</b><div class="note">${sel.s.note||""}${sel.s.w?` (${sel.s.w}.)`:""}</div><div class="acts"><a class="btn primary" target="_blank" rel="noopener" href="${mapsUrl(sel.s.q||sel.pt.q)}">Open in Maps</a>${sel.s.b&&sel.s.t&&!gonePath?`<a class="btn" target="_blank" rel="noopener" href="${gcal(day,sel.s)}">Add to calendar</a>`:""}</div></div>`:"";
   const compass='<svg class="compass" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="none" stroke="#6B4F2C" stroke-width="1.5"/><polygon points="32,3 36,28 61,32 36,36 32,61 28,36 3,32 28,28" fill="#8A6A3A" stroke="#4A3520" stroke-width=".8"/><polygon points="32,3 36,28 28,28" fill="#A8432F" stroke="#4A3520" stroke-width=".8"/></svg>';
   const list=`<div class="card">${st.map(o=>`<div class="place"><div><div class="n"><span class="num" style="${o.s.b?"background:#C8951C":""}">${o.s.num}</span>${o.s.title}</div>${o.s.w?`<div class="note">${o.s.w}</div>`:""}</div><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(o.s.q||o.pt.q)}">Maps</a></div>`).join("")}</div>`;
   const off=day.trip?`<div class="note small" style="margin:0 2px 8px"><b>${day.trip}</b> is a day trip off this map. Only the Amsterdam stops are shown.</div>`:"";
-  return {svg,sheet,compass,list,off,title:`<b>Oct ${dn}</b><i>${day.title}</i>`};
+  return {svg,sheet,compass,list,off:(gonePath?`<div class="pastnote">This day is behind us, so its stops are greyed out.</div>`:"")+off,title:`<b>Oct ${dn}</b><i>${day.title}${gonePath?" ✓":""}</i>`};
 }
 
 function voteHtml(id){
@@ -1103,6 +1105,11 @@ MAPS.amsterdam.off="Old map, modern pins. Pins are close but not exact on an old
 MAPS.prague.img={src:"maps/prague-1800s.jpg",w:735*1.2,h:556*1.2,k:1.2,geo:[10362.518081,-1868.262141,-55452.194067,242.099847,-15172.720643,756655.733173]};
 MAPS.prague.sub="Murray's Handbook map, 1800s"; MAPS.prague.vb={x:60,y:8,w:530,h:662}; MAPS.prague.maxW=882;
 MAPS.prague.off="Old map, modern pins, so tap Open in Maps for the exact spot. The hotel isn't pinned yet because its name isn't in the plan. Brevnov Monastery is off the old map to the west.";
+/* has this day / place / city already happened? (uses the live "today" T) */
+const dPast=n=>("2026-10-"+String(n).padStart(2,"0"))<T;
+const ptPast=pt=>Array.isArray(pt.days)&&pt.days.length>0&&pt.days.every(dPast);
+const notePast=t=>{const m=[...String(t||"").matchAll(/Oct (\d+)/g)].map(x=>+x[1]);return m.length>0&&m.every(dPast)};
+const CITY_LAST={prague:13,amsterdam:19,bruges:24};
 const XY=pt=>{ if(pt.px) return pt.px; const g=CM.img&&CM.img.geo; if(g){const k=CM.img.k; return [(g[0]*pt.lon+g[1]*pt.lat+g[2])*k,(g[3]*pt.lon+g[4]*pt.lat+g[5])*k]} return P(pt.lon,pt.lat); };
 
 const _lay={};
@@ -1147,23 +1154,23 @@ function viewCityMap(){
   const hit=pt=>pt.days==="all"||f==="all"||pt.days.includes(f);
   let dots="";
   CM.pts.filter(p=>!p.x).sort((a,b)=>(hit(a)?1:0)-(hit(b)?1:0)).forEach(pt=>{
-    const [x,y]=XY(pt), on=hit(pt), sel=state.sel===pt.id, col=DOTCOL[pt.cat];
+    const [x,y]=XY(pt), on=hit(pt), sel=state.sel===pt.id, gone=ptPast(pt), col=gone?"#9C968E":DOTCOL[pt.cat];
     const small=pt.cat==="landmark", r=small?5:pt.cat==="book"?10:8.5;
     const [dx,dy,an]=pt.lab, X=x.toFixed(1), Y=y.toFixed(1);
-    dots+=`<g class="mdot" data-dot="${pt.id}" tabindex="0" role="button" aria-label="${pt.n}" opacity="${on?1:.28}">
+    dots+=`<g class="mdot" data-dot="${pt.id}" tabindex="0" role="button" aria-label="${pt.n}${gone?", done":""}" opacity="${on?(gone?.6:1):.28}">
       <circle cx="${X}" cy="${Y}" r="22" fill="transparent"/>
       ${sel?`<circle cx="${X}" cy="${Y}" r="${r+7}" fill="none" stroke="${col}" stroke-width="2.5" opacity=".6"/>`:""}
       ${pt.approx?`<circle cx="${X}" cy="${Y}" r="${r+4}" fill="none" stroke="#2A1D10" stroke-width="1.2" stroke-dasharray="3 2.5" opacity=".8"/>`:""}
       <circle cx="${X}" cy="${Y}" r="${r}" fill="${col}" stroke="#F3E7C6" stroke-width="2.5"/>
       ${pt.cat==="book"?`<circle cx="${X}" cy="${Y}" r="3" fill="#2A1D10"/>`:""}
-      <text class="m-dl" x="${(x+dx).toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${an}" ${small?'style="font-size:13px;font-style:italic"':""}>${pt.n}</text></g>`;
+      <text class="m-dl${gone?" gone":""}" x="${(x+dx).toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${an}" ${small?'style="font-size:13px;font-style:italic"':""}>${pt.n}${gone?" ✓":""}</text></g>`;
   });
   const svg=`<svg id="citymap" viewBox="${vb.x.toFixed(1)} ${vb.y.toFixed(1)} ${vb.w.toFixed(1)} ${vb.h.toFixed(1)}" role="img" aria-label="Street map of ${CM.name} with itinerary locations">${cityLayout()}${dots}</svg>`;
   let sheet="";
   const sp=CM.pts.find(p=>p.id===state.sel);
   if(sp){
     const dl=(sp.days==="all"||sp.cal)?"":sp.days.map(d=>"Oct "+d).join(", ");
-    sheet=`<div class="sheet"><button class="x" data-desel aria-label="Close">×</button><b>${sp.n}</b><div class="note">${dl?dl+". ":""}${sp.note}${sp.approx&&!/approximate/i.test(sp.note)?" Position approximate.":""}</div><div class="acts"><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(sp.q)}">Open in Maps</a>${sp.cal?`<a class="btn primary" target="_blank" rel="noopener" href="${gcal({date:sp.cal.date},sp.cal)}">Add to calendar</a>`:""}</div></div>`;
+    sheet=`<div class="sheet"><button class="x" data-desel aria-label="Close">×</button><b>${sp.n}${ptPast(sp)?" ✓":""}</b><div class="note">${ptPast(sp)?"Done. ":""}${dl?dl+". ":""}${sp.note}${sp.approx&&!/approximate/i.test(sp.note)?" Position approximate.":""}</div><div class="acts"><a class="btn" target="_blank" rel="noopener" href="${mapsUrl(sp.q)}">Open in Maps</a>${sp.cal&&!ptPast(sp)?`<a class="btn primary" target="_blank" rel="noopener" href="${gcal({date:sp.cal.date},sp.cal)}">Add to calendar</a>`:""}</div></div>`;
   }
   const legend=`<div class="legend">${["book","sight","food","bar","hunt","stay"].map(k=>`<span><span class="dot" style="background:${DOTCOL[k]}"></span>${DOTLAB[k]}</span>`).join("")}<span><span class="dot" style="background:none;border:1.5px dashed #2A1D10;width:9px;height:9px"></span>Approximate</span></div>`;
   const compass='<svg class="compass" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="none" stroke="#6B4F2C" stroke-width="1.5"/><circle cx="32" cy="32" r="24" fill="none" stroke="#6B4F2C" stroke-width=".8"/><polygon points="32,3 36,28 61,32 36,36 32,61 28,36 3,32 28,28" fill="#8A6A3A" stroke="#4A3520" stroke-width=".8"/><polygon points="32,3 36,28 28,28" fill="#A8432F" stroke="#4A3520" stroke-width=".8"/></svg>';
